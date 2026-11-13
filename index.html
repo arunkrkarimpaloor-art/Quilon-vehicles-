@@ -9,56 +9,104 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         body {
-            background-color: #f8fafc;
-            color: #334155;
+            background-color: #f1f5f9;
+            color: #1e293b;
         }
         header {
-            background: #0f172a;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: white;
-            padding: 25px 20px;
+            padding: 30px 20px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         header h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
             color: #38bdf8;
         }
         header p {
             font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 15px;
+            color: #cbd5e1;
+            margin-bottom: 20px;
         }
         .sell-toggle-btn {
-            background-color: #10b981;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 13px 26px;
+            border-radius: 50px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            transition: background 0.2s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            transition: transform 0.2s;
         }
         .sell-toggle-btn:hover {
-            background-color: #059669;
+            transform: scale(1.03);
         }
 
-        /* Sell Form Modal / Section */
+        /* Search & Filter Section */
+        .filter-bar {
+            max-width: 1200px;
+            margin: 25px auto 10px;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 13px 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus {
+            border-color: #2563eb;
+        }
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .tab-btn {
+            padding: 9px 22px;
+            border: none;
+            border-radius: 25px;
+            background: #e2e8f0;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #1e3a8a;
+            color: white;
+            box-shadow: 0 3px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        /* Sell Form */
         #sellSection {
             display: none;
             max-width: 500px;
-            margin: 25px auto;
+            margin: 20px auto;
             background: white;
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border-top: 5px solid #10b981;
         }
         #sellSection h2 {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             color: #0f172a;
             font-size: 20px;
             text-align: center;
@@ -68,15 +116,16 @@
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
             font-size: 14px;
+            color: #334155;
         }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px;
+            padding: 11px;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
         }
         .photo-buttons {
@@ -86,10 +135,10 @@
         }
         .photo-btn {
             flex: 1;
-            padding: 10px;
-            background: #e2e8f0;
-            border: 1px solid #94a3b8;
-            border-radius: 6px;
+            padding: 11px;
+            background: #f8fafc;
+            border: 1.5px dashed #64748b;
+            border-radius: 8px;
             text-align: center;
             cursor: pointer;
             font-size: 13px;
@@ -98,16 +147,16 @@
         }
         #imagePreview {
             width: 100%;
-            max-height: 180px;
+            max-height: 190px;
             object-fit: cover;
-            margin-top: 10px;
+            margin-top: 12px;
             border-radius: 8px;
             display: none;
         }
         .pay-sell-btn {
             width: 100%;
-            padding: 12px;
-            background-color: #f59e0b;
+            padding: 13px;
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -120,53 +169,71 @@
         /* Vehicle Grid */
         .container {
             max-width: 1200px;
-            margin: 30px auto;
+            margin: 20px auto 40px;
             padding: 0 15px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
             gap: 25px;
         }
         .vehicle-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2e8f0;
         }
         .vehicle-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #38bdf8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .img-wrapper {
+            position: relative;
         }
         .vehicle-img {
             width: 100%;
             height: 200px;
             object-fit: cover;
             background-color: #e2e8f0;
+            display: block;
         }
         .vehicle-info {
             padding: 20px;
         }
         .vehicle-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #1e293b;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #0f172a;
         }
         .vehicle-details {
             font-size: 14px;
             color: #64748b;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         .vehicle-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0d9488;
-            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #059669;
+            margin-bottom: 16px;
         }
         .unlock-btn {
             display: block;
             width: 100%;
             padding: 12px;
-            background-color: #2563eb;
+            background: #2563eb;
             color: white;
             text-align: center;
             text-decoration: none;
@@ -176,14 +243,13 @@
             transition: background 0.2s;
         }
         .unlock-btn:hover {
-            background-color: #1d4ed8;
+            background: #1d4ed8;
         }
         footer {
             text-align: center;
             padding: 25px;
             background: #0f172a;
             color: #94a3b8;
-            margin-top: 50px;
             font-size: 13px;
         }
     </style>
@@ -193,155 +259,95 @@
     <header>
         <h1>Quilon Vehicles</h1>
         <p>Pathanapuram, Kollam | Trusted Second Hand Cars & Bikes</p>
-        <button class="sell-toggle-btn" onclick="toggleSellForm()">+ വാഹനം വിൽക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക (₹10)</button>
+        <button class="sell-toggle-btn" onclick="toggleSellForm()">+ Click Here to Sell Your Vehicle</button>
     </header>
 
     <!-- Sell Vehicle Form -->
     <div id="sellSection">
-        <h2>നിങ്ങളുടെ വാഹനം വിൽക്കുക</h2>
+        <h2>Sell Your Vehicle</h2>
         <div class="form-group">
-            <label>വാഹനത്തിന്റെ പേര് & മോഡൽ</label>
-            <input type="text" id="vTitle" placeholder="ഉദാ: Maruti Swift 2019" required>
+            <label>Vehicle Category</label>
+            <select id="vCategory">
+                <option value="Car">Car</option>
+                <option value="Bike">Bike / Scooter</option>
+            </select>
         </div>
         <div class="form-group">
-            <label>വിവരങ്ങൾ (വർഷം, ഇന്ധനം, കിലോമീറ്റർ)</label>
-            <input type="text" id="vDetails" placeholder="ഉദാ: 2019 | Petrol | 40,000 km" required>
+            <label>Vehicle Name & Model</label>
+            <input type="text" id="vTitle" placeholder="Ex: Maruti Swift 2019" required>
         </div>
         <div class="form-group">
-            <label>ഉദ്ദേശിക്കുന്ന വില (₹)</label>
-            <input type="text" id="vPrice" placeholder="ഉദാ: 4,20,000" required>
+            <label>Details (Year, Fuel, KM)</label>
+            <input type="text" id="vDetails" placeholder="Ex: 2019 | Petrol | 40,000 km" required>
         </div>
         <div class="form-group">
-            <label>RC ഓണറുടെ ഫോൺ നമ്പർ</label>
-            <input type="tel" id="vPhone" placeholder="10 അക്ക മൊബൈൽ നമ്പർ" required>
+            <label>Expected Price (₹)</label>
+            <input type="text" id="vPrice" placeholder="Ex: 4,20,000" required>
         </div>
         <div class="form-group">
-            <label>വാഹനത്തിന്റെ ഫോട്ടോ തിരഞ്ഞെടുക്കുക</label>
+            <label>RC Owner's Phone Number</label>
+            <input type="tel" id="vPhone" placeholder="10-digit mobile number" required>
+        </div>
+        <div class="form-group">
+            <label>Upload Vehicle Photo</label>
             <div class="photo-buttons">
                 <label class="photo-btn">
-                    📷 ക്യാമറ തുറക്കുക
+                    📷 Open Camera
                     <input type="file" accept="image/*" capture="environment" style="display:none" onchange="previewImage(event)">
                 </label>
                 <label class="photo-btn">
-                    🖼️ ഗാലറിയിൽ നിന്നും
+                    🖼️ From Gallery
                     <input type="file" accept="image/*" style="display:none" onchange="previewImage(event)">
                 </label>
             </div>
             <img id="imagePreview" alt="Preview">
         </div>
-        <button class="pay-sell-btn" onclick="submitVehicle()">₹10 അടച്ച് വാഹനം പോസ്റ്റ് ചെയ്യുക</button>
+        <button class="pay-sell-btn" onclick="submitVehicle()">Post Vehicle</button>
     </div>
 
-    <div class="container" id="vehicleContainer">
-        <!-- Vehicle 1 -->
-        <div class="vehicle-card">
-            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=500&q=60" alt="Car" class="vehicle-img">
-            <div class="vehicle-info">
-                <div class="vehicle-title">Maruti Suzuki Swift</div>
-                <div class="vehicle-details">Model: 2018 | Diesel | 55,000 km</div>
-                <div class="vehicle-price">₹ 4,50,000</div>
-                <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
-                    Unlock RC Owner Contact - ₹30
-                </a>
-            </div>
-        </div>
-
-        <!-- Vehicle 2 -->
-        <div class="vehicle-card">
-            <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=500&q=60" alt="Car" class="vehicle-img">
-            <div class="vehicle-info">
-                <div class="vehicle-title">Hyundai Grand i10</div>
-                <div class="vehicle-details">Model: 2017 | Petrol | 48,000 km</div>
-                <div class="vehicle-price">₹ 3,80,000</div>
-                <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
-                    Unlock RC Owner Contact - ₹30
-                </a>
-            </div>
-        </div>
-
-        <!-- Vehicle 3 -->
-        <div class="vehicle-card">
-            <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=500&q=60" alt="Bike" class="vehicle-img">
-            <div class="vehicle-info">
-                <div class="vehicle-title">Royal Enfield Classic 350</div>
-                <div class="vehicle-details">Model: 2020 | Petrol | 22,000 km</div>
-                <div class="vehicle-price">₹ 1,45,000</div>
-                <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
-                    Unlock RC Owner Contact - ₹30
-                </a>
-            </div>
+    <!-- Search and Filter Controls -->
+    <div class="filter-bar">
+        <input type="text" id="searchInput" class="search-box" onkeyup="filterVehicles()" placeholder="🔍 Search vehicle name (Ex: Swift, Bullet, i10)...">
+        <div class="category-tabs">
+            <button class="tab-btn active" onclick="setCategory('All', this)">All</button>
+            <button class="tab-btn" onclick="setCategory('Car', this)">Cars</button>
+            <button class="tab-btn" onclick="setCategory('Bike', this)">Bikes</button>
         </div>
     </div>
+
+    <!-- Vehicle Listings -->
+    <div class="container" id="vehicleContainer"></div>
 
     <footer>
-        <p>&copy; 2026 Quilon Vehicles. All Rights Reserved.</p>
+        <p>&copy; 2026 Quilon Vehicles, Pathanapuram. All Rights Reserved.</p>
     </footer>
 
     <script>
         let uploadedImageSrc = "";
+        let currentCategory = "All";
 
-        function toggleSellForm() {
-            const form = document.getElementById('sellSection');
-            form.style.display = (form.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    uploadedImageSrc = e.target.result;
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = uploadedImageSrc;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
+        const defaultVehicles = [
+            {
+                category: "Car",
+                title: "Maruti Suzuki Swift",
+                details: "Model: 2018 | Diesel | 55,000 km",
+                price: "4,50,000",
+                image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                category: "Car",
+                title: "Hyundai Grand i10",
+                details: "Model: 2017 | Petrol | 48,000 km",
+                price: "3,80,000",
+                image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                category: "Bike",
+                title: "Royal Enfield Classic 350",
+                details: "Model: 2020 | Petrol | 22,000 km",
+                price: "1,45,000",
+                image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=500&q=60"
             }
-        }
+        ];
 
-        function submitVehicle() {
-            const title = document.getElementById('vTitle').value;
-            const details = document.getElementById('vDetails').value;
-            const price = document.getElementById('vPrice5').value || document.getElementById('vPrice').value;
-            const phone = document.getElementById('vPhone').value;
-
-            if (!title || !details || !price || !phone || !uploadedImageSrc) {
-                alert("ദയവായി എല്ലാ വിവരങ്ങളും വാഹനത്തിന്റെ ഫോട്ടോയും നൽകുക!");
-                return;
-            }
-
-            // Open Razorpay ₹10 link for listing fee
-            window.open("https://razorpay.me/@arunkr/10", "_blank");
-
-            // Add vehicle card to the page
-            const container = document.getElementById('vehicleContainer');
-            const newCard = `
-                <div class="vehicle-card">
-                    <img src="${uploadedImageSrc}" alt="${title}" class="vehicle-img">
-                    <div class="vehicle-info">
-                        <div class="vehicle-title">${title}</div>
-                        <div class="vehicle-details">${details}</div>
-                        <div class="vehicle-price">₹ ${price}</div>
-                        <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
-                            Unlock RC Owner Contact - ₹30
-                        </a>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('afterbegin', newCard);
-
-            // Reset & close form
-            document.getElementById('vTitle').value = "";
-            document.getElementById('vDetails').value = "";
-            document.getElementById('vPrice').value = "";
-            document.getElementById('vPhone').value = "";
-            document.getElementById('imagePreview').style.display = 'none';
-            uploadedImageSrc = "";
-            toggleSellForm();
-
-            alert("₹10 പേയ്‌മെന്റ് പൂർത്തിയാക്കുക! നിങ്ങളുടെ വാഹനം ലിസ്റ്റിൽ ചേർത്തിട്ടുണ്ട്.");
-        }
-    </script>
-
-</body>
-</html>
+        let vehicles = JSON.parse(localStorage.getItem('qu
