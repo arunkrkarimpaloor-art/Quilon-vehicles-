@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quilon Vehicles & Parts</title>
     <style>
-        /* Overall Page Background Color (White space-il muzhuvan yellow/green color varan) */
+        /* Overall Page Background Color */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #fef08a; color: #333; }
         
         /* Top Most Dark Golden Bar */
@@ -22,7 +22,8 @@
         .dropdown-menu.active { display: block; }
         .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 10px; display: block; color: #555; }
 
-        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        /* Container with extra bottom padding to prevent mobile floating bar overlap */
+        .container { padding: 20px 20px 80px 20px; max-width: 1200px; margin: auto; }
         
         /* Filters and Form Container background */
         .filters, .form-container { background: #dcfce7; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
@@ -93,7 +94,12 @@
         <!-- Search & Filters -->
         <div class="filters">
             <h3 id="txtSearchFilter">Search & Filter</h3>
-            <input type="text" id="searchInput" placeholder="Search vehicles or parts..." onkeyup="filterPosts()">
+            
+            <!-- Search Input with Auto-suggestions for Spelling Matching -->
+            <div style="position: relative; display: inline-block; width: 100%;">
+                <input type="text" id="searchInput" placeholder="Search vehicles or parts (e.g. Bullet, Splendor)..." onkeyup="handleSearchInput()" autocomplete="off">
+                <div id="searchSuggestions" class="suggestion-box"></div>
+            </div>
             
             <select id="categoryFilter" onchange="filterPosts()">
                 <option value="">All Categories</option>
@@ -113,13 +119,13 @@
         <!-- Post New Ad Form -->
         <div class="form-container">
             <h3 id="txtPostAd">Post Your Ad</h3>
-            <input type="text" id="postTitle" placeholder="Vehicle / Part Name">
+            <input type="text" id="postTitle" placeholder="Vehicle / Part Name (e.g. Royal Enfield)">
             
             <select id="postCategory" onchange="updateFeesText()">
-                <option value="Bike">Bike (Posting Fee: ₹20)</option>
-                <option value="Car">Car (Posting Fee: ₹20)</option>
-                <option value="Auto">Auto (Posting Fee: ₹30)</option>
-                <option value="Part">Body Part (Posting Fee: ₹20)</option>
+                <option value="Bike">Bike (Posting Fee: ₹20 / Unlock: ₹20)</option>
+                <option value="Car">Car (Posting Fee: ₹20 / Unlock: ₹30)</option>
+                <option value="Auto">Auto (Posting Fee: ₹30 / Unlock: ₹30)</option>
+                <option value="Part">Body Part (Posting Fee: ₹20 / Unlock: ₹20)</option>
             </select>
 
             <select id="postFuel">
@@ -164,7 +170,7 @@
             }
         }
 
-        // Kollam Locations List (Alphabetical order)
+        // Kollam Locations List
         const kollamLocations = [
             "Anchal", "Chadayamangalam", "Kadavoor", "Kallumkadavu", "Kollam", 
             "Kottarakkara", "Kundara", "Nedumparambu", "Pathanapuram", "Punalur", "Sasthamcotta"
@@ -182,23 +188,17 @@
             }
 
             const matches = kollamLocations.filter(item => item.toLowerCase().includes(inputVal));
-
             matches.forEach(place => {
                 const div = document.createElement('div');
                 div.style.padding = '10px';
                 div.style.cursor = 'pointer';
                 div.style.borderBottom = '1px solid #eee';
                 div.innerText = place;
-
                 div.onclick = function() {
                     inputField.value = place;
                     suggestionBox.innerHTML = '';
                     filterPosts();
                 };
-
-                div.onmouseover = function() { div.style.background = '#f2f2f2'; };
-                div.onmouseout = function() { div.style.background = 'white'; };
-
                 suggestionBox.appendChild(div);
             });
             filterPosts();
@@ -213,24 +213,48 @@
             if (inputVal.length === 0) return;
 
             const matches = kollamLocations.filter(item => item.toLowerCase().includes(inputVal));
-
             matches.forEach(place => {
                 const div = document.createElement('div');
                 div.style.padding = '10px';
                 div.style.cursor = 'pointer';
                 div.style.borderBottom = '1px solid #eee';
                 div.innerText = place;
-
                 div.onclick = function() {
                     inputField.value = place;
                     suggestionBox.innerHTML = '';
                 };
-
-                div.onmouseover = function() { div.style.background = '#f2f2f2'; };
-                div.onmouseout = function() { div.style.background = 'white'; };
-
                 suggestionBox.appendChild(div);
             });
+        }
+
+        // Search typing suggestions based on spelling matching
+        function handleSearchInput() {
+            const inputField = document.getElementById('searchInput');
+            const val = inputField.value.toLowerCase();
+            const suggestionBox = document.getElementById('searchSuggestions');
+            suggestionBox.innerHTML = '';
+
+            let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+
+            if (val.length > 0) {
+                const matches = posts.filter(p => p.title.toLowerCase().includes(val));
+                const uniqueTitles = [...new Set(matches.map(p => p.title))];
+
+                uniqueTitles.forEach(title => {
+                    const div = document.createElement('div');
+                    div.style.padding = '10px';
+                    div.style.cursor = 'pointer';
+                    div.style.borderBottom = '1px solid #eee';
+                    div.innerText = title;
+                    div.onclick = function() {
+                        inputField.value = title;
+                        suggestionBox.innerHTML = '';
+                        filterPosts();
+                    };
+                    suggestionBox.appendChild(div);
+                });
+            }
+            filterPosts();
         }
 
         function updateFeesText() {
@@ -322,7 +346,7 @@
         function filterPosts() {
             let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
             
-            // 30 days expiration check
+            // 30 days expiration check (Auto delete after 30 days)
             const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
             const currentTime = new Date().getTime();
             posts = posts.filter(p => (currentTime - (p.date || 0)) < thirtyDaysInMillis);
