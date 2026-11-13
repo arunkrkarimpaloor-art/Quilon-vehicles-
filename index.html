@@ -986,3 +986,44 @@
     </script>
 </body>
 </html>
+// Kollam/Local sthalangalinte list
+const kollamLocations = [
+    "Pathanapuram", "Kottarakkara", "Punalur", "Kollam", "Chadayamangalam", 
+    "Anchal", "Kadavoor", "Nedumparambu", "Kallumkadavu", "Kundara", 
+    "Karunagappally", "Paravur", "Sasthamcotta", "Kottarakkara", "Pathanapuram Town"
+];
+
+function showLocationSuggestions() {
+    const input = document.getElementById('postLocation').value.toLowerCase();
+    const suggestionBox = document.getElementById('locationSuggestions');
+    suggestionBox.innerHTML = '';
+
+    if (input.length === 0) {
+        return;
+    }
+
+    // Alphabetic order-il sort cheythu matching sthalangal edukku
+    const filteredLocs = kollamLocations
+        .filter(loc => loc.toLowerCase().includes(input))
+        .sort();
+
+    filteredLocs.forEach(loc => {
+        const div = document.createElement('div');
+        div.style.padding = '8px 12px';
+        div.style.cursor = 'pointer';
+        div.style.borderBottom = '1px solid #eee';
+        div.innerText = loc;
+        
+        // Click cheythal input-il a sthalam vannu irikkum
+        div.onclick = function() {
+            document.getElementById('postLocation').value = loc;
+            suggestionBox.innerHTML = '';
+        };
+
+        // Hover effect
+        div.onmouseover = function() { div.style.background = '#f0f0f0'; };
+        div.onmouseout = function() { div.style.background = 'white'; };
+
+        suggestionBox.appendChild(div);
+    });
+}
