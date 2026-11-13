@@ -734,3 +734,255 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quilon Vehicles & Parts</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
+        header { background: #1b263b; color: white; padding: 15px; text-align: center; }
+        .banner img { width: 100%; max-height: 200px; object-fit: cover; }
+        .menu { display: flex; justify-content: space-around; background: #415a77; padding: 10px; flex-wrap: wrap; }
+        .menu a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; padding: 5px 10px; }
+        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        .filters, .form-container { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: #e0a96d; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #c68b59; }
+        .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .post-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 15px; position: relative; }
+        .post-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; }
+        .price { color: #2a9d8f; font-size: 18px; font-weight: bold; }
+        .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Quilon Vehicles & Parts</h1>
+        <p id="tagline">Buy & Sell Cars, Bikes, and Body Parts in Kollam</p>
+    </header>
+
+    <!-- Banner Image -->
+    <div class="banner">
+        <img src="1000232744.png" alt="Banner" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Multi-Language Menu -->
+    <div class="menu">
+        <a onclick="setLanguage('ml')">മലയാളം</a>
+        <a onclick="setLanguage('en')">English</a>
+        <a onclick="setLanguage('hi')">हिन्दी</a>
+        <a onclick="setLanguage('ta')">தமிழ்</a>
+        <a onclick="setLanguage('kn')">ಕನ್ನಡ</a>
+        <a onclick="setLanguage('bn')">বাংলা</a>
+    </div>
+
+    <div class="container">
+        <!-- Search & Filters -->
+        <div class="filters">
+            <h3 id="txtSearchFilter">Search & Filter</h3>
+            <input type="text" id="searchInput" placeholder="Search vehicles or parts..." onkeyup="filterPosts()">
+            
+            <select id="categoryFilter" onchange="filterPosts()">
+                <option value="">All Categories</option>
+                <option value="Car">Cars</option>
+                <option value="Bike">Bikes</option>
+                <option value="Part">Body Parts</option>
+            </select>
+
+            <select id="fuelFilter" onchange="filterPosts()">
+                <option value="">All Fuel Types (Petrol/Diesel/EV)</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="ev">Electric (EV)</option>
+                <option value="cng">CNG</option>
+            </select>
+
+            <select id="priceFilter" onchange="filterPosts()">
+                <option value="">All Prices</option>
+                <option value="20k">Under ₹20,000</option>
+                <option value="1lakh">Under ₹1 Lakh</option>
+                <option value="5lakhs">Under ₹5 Lakhs</option>
+            </select>
+
+            <input type="text" id="locationFilter" placeholder="Filter by Location (e.g. Pathanapuram, Kollam)" onkeyup="filterPosts()">
+        </div>
+
+        <!-- Post New Ad Form -->
+        <div class="form-container">
+            <h3 id="txtPostAd">Post Your Ad (Posting Fee: ₹10)</h3>
+            <input type="text" id="postTitle" placeholder="Vehicle / Part Name">
+            <select id="postCategory">
+                <option value="Car">Car</option>
+                <option value="Bike">Bike</option>
+                <option value="Part">Body Part</option>
+            </select>
+            <select id="postFuel">
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="ev">Electric (EV)</option>
+                <option value="cng">CNG</option>
+            </select>
+            <input type="number" id="postPrice" placeholder="Price in ₹">
+            <input type="text" id="postLocation" placeholder="Location">
+            <input type="file" id="postImage" accept="image/*">
+            <textarea id="postContact" placeholder="Contact Details"></textarea>
+            <button onclick="submitPost()" id="btnSubmit">Publish Ad (Pay ₹10)</button>
+        </div>
+
+        <!-- Posts Display Area -->
+        <h2 id="txtRecentPosts">Latest Posts</h2>
+        <div class="post-grid" id="postsContainer"></div>
+    </div>
+
+    <script>
+        // Translations Dictionary
+        const translations = {
+            en: { tagline: "Buy & Sell Cars, Bikes, and Body Parts in Kollam", searchFilter: "Search & Filter", postAd: "Post Your Ad (Posting Fee: ₹10)", recentPosts: "Latest Posts", submitBtn: "Publish Ad (Pay ₹10)" },
+            ml: { tagline: "കൊല്ലത്തs കാറുകളും ബൈക്കുകളും സ്പെയർ പാർട്സുകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", postAd: "പരസ്യം നൽകൂ (പോസ്റ്റിംഗ് ഫീസ്: ₹10)", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ", submitBtn: "പോസ്റ്റ് ചെയ്യുക (₹10 അടയ്ക്കുക)" },
+            hi: { tagline: "कोल्लम में कार, बाइक और बॉडी पार्ट्स खरीदें और बेचें", searchFilter: "खोज और फ़िल्टर", postAd: "विज्ञापन पोस्ट करें (शुल्क: ₹10)", recentPosts: "नवीनतम पोस्ट", submitBtn: "विज्ञापन प्रकाशित करें" },
+            ta: { tagline: "கொல்லத்தில் கார், பைக் மற்றும் ஸ்பேர் பகுதிகளை வாங்குங்கள் & விற்கவும்", searchFilter: "தேடல் & வடிகட்டி", postAd: "விளம்பரத்தை வெளியிடவும் (கட்டணம்: ₹10)", recentPosts: "சமீபத்திய பதிவுகள்", submitBtn: "வெளியிடவும்" },
+            kn: { tagline: "ಕೊಲ್ಲಂನಲ್ಲಿ ಕಾರುಗಳು, ಬೈಕ್‌ಗಳು ಮತ್ತು ಬಾಡಿ ಪಾರ್ಟ್‌ಗಳನ್ನು ಖರೀದಿಸಿ ಮತ್ತು ಮಾರಾಟ ಮಾಡಿ", searchFilter: "ಹುಡುಕಾಟ ಮತ್ತು ಫಿಲ್ಟರ್", postAd: "বিজ্ঞাপন পোস্ট করুন", recentPosts: "ಇತ್ತೀಚಿನ ಪೋಸ್ಟ್‌ಗಳು", submitBtn: "ಪ್ರಕಟಿಸಿ" },
+            bn: { tagline: "কোলামে গাড়ি, বাইক এবং যন্ত্রাংশ কেনা বেচা করুন", searchFilter: "অনুসন্ধান এবং ফিল্টার", postAd: "বিজ্ঞাপন পোস্ট করুন (ফি: ₹10)", recentPosts: "সর্বশেষ পোস্ট", submitBtn: "প্রকাশ করুন" }
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('quilon_lang', lang);
+            document.getElementById('tagline').innerText = translations[lang].tagline;
+            document.getElementById('txtSearchFilter').innerText = translations[lang].searchFilter;
+            document.getElementById('txtPostAd').innerText = translations[lang].postAd;
+            document.getElementById('txtRecentPosts').innerText = translations[lang].recentPosts;
+            document.getElementById('btnSubmit').innerText = translations[lang].submitBtn;
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('quilon_lang') || 'ml';
+            setLanguage(savedLang);
+            loadPosts();
+        };
+
+        function submitPost() {
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const fuel = document.getElementById('postFuel').value;
+            const price = Number(document.getElementById('postPrice').value);
+            const location = document.getElementById('postLocation').value;
+            const contact = document.getElementById('postContact').value;
+            const imageInput = document.getElementById('postImage');
+
+            if(!title || !price || !location) {
+                alert("Please fill all required fields!");
+                return;
+            }
+
+            const reader = new FileReader();
+            if(imageInput.files && imageInput.files[0]) {
+                reader.readAsDataURL(imageInput.files[0]);
+                reader.onload = function(e) {
+                    savePostData(title, category, fuel, price, location, contact, e.target.result);
+                }
+            } else {
+                savePostData(title, category, fuel, price, location, contact, '');
+            }
+        }
+
+        function savePostData(title, category, fuel, price, location, contact, image) {
+            let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+            const newPost = {
+                id: Date.now(),
+                title, category, fuel, price, location, contact, image,
+                date: new Date().getTime()
+            };
+            posts.unshift(newPost); // Latest post first
+            localStorage.setItem('quilon_posts', JSON.stringify(posts));
+            alert("Payment simulated: ₹10 deducted. Ad Posted Successfully!");
+            location.reload();
+        }
+
+        function toggleFavorite(postId) {
+            let favorites = JSON.parse(localStorage.getItem('quilon_favorites')) || [];
+            const index = favorites.indexOf(postId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(postId);
+            }
+            localStorage.setItem('quilon_favorites', JSON.stringify(favorites));
+            filterPosts();
+        }
+
+        function unlockContact(postId) {
+            let unlocked = JSON.parse(localStorage.getItem('quilon_unlocked')) || [];
+            if(!unlocked.includes(postId)) {
+                if(confirm("Unlock contact details for ₹20?")) {
+                    unlocked.push(postId);
+                    localStorage.setItem('quilon_unlocked', JSON.stringify(unlocked));
+                    alert("Payment simulated: ₹20 deducted.");
+                    filterPosts();
+                }
+            }
+        }
+
+        function loadPosts() {
+            filterPosts();
+        }
+
+        function filterPosts() {
+            let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+            let favorites = JSON.parse(localStorage.getItem('quilon_favorites')) || [];
+            let unlocked = JSON.parse(localStorage.getItem('quilon_unlocked')) || [];
+
+            const searchTxt = document.getElementById('searchInput').value.toLowerCase();
+            const catFilter = document.getElementById('categoryFilter').value;
+            const fuelFilter = document.getElementById('fuelFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+            const locFilter = document.getElementById('locationFilter').value.toLowerCase();
+
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = '';
+
+            let filtered = posts.filter(p => {
+                let matchesSearch = p.title.toLowerCase().includes(searchTxt);
+                let matchesCat = catFilter === "" || p.category === catFilter;
+                let matchesFuel = fuelFilter === "" || p.fuel === fuelFilter;
+                let matchesLoc = locFilter === "" || p.location.toLowerCase().includes(locFilter);
+                
+                let matchesPrice = true;
+                if(priceFilter === '20k') matchesPrice = p.price <= 20000;
+                else if(priceFilter === '1lakh') matchesPrice = p.price <= 100000;
+                else if(priceFilter === '5lakhs') matchesPrice = p.price <= 500000;
+
+                return matchesSearch && matchesCat && matchesFuel && matchesPrice && matchesLoc;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = "<p>No posts found.</p>";
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isFav = favorites.includes(p.id);
+                const isUnlocked = unlocked.includes(p.id);
+
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <button class="fav-btn" onclick="toggleFavorite(${p.id})">${isFav ? '❤️' : '🤍'}</button>
+                    ${p.image ? `<img src="${p.image}" alt="Image">` : ''}
+                    <h3>${p.title}</h3>
+                    <p><b>Category:</b> ${p.category} | <b>Fuel:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
+                    <p class="price">₹ ${p.price}</p>
+                    <p>📍 ${p.location}</p>
+                    <div>
+                        ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id})">Unlock Contact (₹20)</button>`}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
