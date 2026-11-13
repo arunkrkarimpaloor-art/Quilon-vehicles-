@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quilon Vehicles - Pathanapuram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+            color: #38bdf8;
+        }
+        header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .vehicle-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+        }
+        .vehicle-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+        .vehicle-info {
+            padding: 20px;
+        }
+        .vehicle-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        .vehicle-details {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+        .vehicle-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0d9488;
+            margin-bottom: 15px;
+        }
+        .unlock-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #2563eb;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        .unlock-btn:hover {
+            background-color: #1d4ed8;
+        }
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #0f172a;
+            color: #94a3b8;
+            margin-top: 50px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Quilon Vehicles</h1>
+        <p>Pathanapuram, Kollam | Trusted Second Hand Cars & Bikes</p>
+    </header>
+
+    <div class="container">
+        <!-- Vehicle 1 -->
+        <div class="vehicle-card">
+            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=500&q=60" alt="Car" class="vehicle-img">
+            <div class="vehicle-info">
+                <div class="vehicle-title">Maruti Suzuki Swift</div>
+                <div class="vehicle-details">Model: 2018 | Diesel | 55,000 km</div>
+                <div class="vehicle-price">₹ 4,50,000</div>
+                <a href="https://razorpay.me/@arunkr" target="_blank" class="unlock-btn">
+                    Unlock Contact - ₹30
+                </a>
+            </div>
+        </div>
+
+        <!-- Vehicle 2 -->
+        <div class="vehicle-card">
+            <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=500&q=60" alt="Car" class="vehicle-img">
+            <div class="vehicle-info">
+                <div class="vehicle-title">Hyundai Grand i10</div>
+                <div class="vehicle-details">Model: 2017 | Petrol | 48,000 km</div>
+                <div class="vehicle-price">₹ 3,80,000</div>
+                <a href="https://razorpay.me/@arunkr" target="_blank" class="unlock-btn">
+                    Unlock Contact - ₹30
+                </a>
+            </div>
+        </div>
+
+        <!-- Vehicle 3 -->
+        <div class="vehicle-card">
+            <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=500&q=60" alt="Bike" class="vehicle-img">
+            <div class="vehicle-info">
+                <div class="vehicle-title">Royal Enfield Classic 350</div>
+                <div class="vehicle-details">Model: 2020 | Petrol | 22,000 km</div>
+                <div class="vehicle-price">₹ 1,45,000</div>
+                <a href="https://razorpay.me/@arunkr" target="_blank" class="unlock-btn">
+                    Unlock Contact - ₹30
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Quilon Vehicles. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
+
