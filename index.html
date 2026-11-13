@@ -3,742 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quilon Vehicles & Parts - Pathanapuram</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background-color: #f1f5f9;
-            color: #1e293b;
-        }
-        header {
-            background: #0f172a;
-            color: white;
-            padding: 15px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .header-banner {
-            width: 100%;
-            max-width: 900px;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .sell-toggle-btn {
-            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            padding: 13px 26px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-            transition: transform 0.2s;
-            margin-top: 5px;
-        }
-        .sell-toggle-btn:hover {
-            transform: scale(1.03);
-        }
-
-        /* Filter Section */
-        .filter-bar {
-            max-width: 1200px;
-            margin: 25px auto 10px;
-            padding: 0 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .top-menu-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .language-selector {
-            padding: 10px 15px;
-            border: 2px solid #2563eb;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            background: white;
-            color: #1e3a8a;
-            outline: none;
-            cursor: pointer;
-        }
-        .search-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-        .search-box {
-            flex: 2;
-            min-width: 200px;
-            padding: 13px 18px;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 15px;
-            background: white;
-            outline: none;
-        }
-        .location-filter, .price-filter {
-            flex: 1;
-            min-width: 150px;
-            padding: 13px 18px;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 15px;
-            background: white;
-            outline: none;
-        }
-        .search-box:focus, .location-filter:focus, .price-filter:focus, .language-selector:focus {
-            border-color: #2563eb;
-        }
-        .category-tabs {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            padding: 9px 18px;
-            border: none;
-            border-radius: 25px;
-            background: #e2e8f0;
-            color: #475569;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: #1e3a8a;
-            color: white;
-            box-shadow: 0 3px 8px rgba(30, 58, 138, 0.3);
-        }
-
-        /* Sell Form */
-        #sellSection {
-            display: none;
-            max-width: 500px;
-            margin: 20px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 14px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-            border-top: 5px solid #10b981;
-        }
-        #sellSection h2 {
-            margin-bottom: 18px;
-            color: #0f172a;
-            font-size: 20px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #334155;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .photo-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        .photo-btn {
-            flex: 1;
-            padding: 11px;
-            background: #f8fafc;
-            border: 1.5px dashed #64748b;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: #1e293b;
-        }
-        #imagePreview {
-            width: 100%;
-            max-height: 190px;
-            object-fit: cover;
-            margin-top: 12px;
-            border-radius: 8px;
-            display: none;
-        }
-        .pay-sell-btn {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        /* Vehicle Grid */
-        .container {
-            max-width: 1200px;
-            margin: 20px auto 40px;
-            padding: 0 15px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 25px;
-        }
-        .vehicle-card {
-            background: white;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #e2e8f0;
-            position: relative;
-        }
-        .vehicle-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-        }
-        .badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(15, 23, 42, 0.85);
-            color: #38bdf8;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .img-wrapper {
-            position: relative;
-        }
-        .vehicle-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #e2e8f0;
-            display: block;
-        }
-        .vehicle-info {
-            padding: 20px;
-        }
-        .vehicle-title {
-            font-size: 19px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #0f172a;
-        }
-        .vehicle-details {
-            font-size: 14px;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-        .vehicle-location {
-            font-size: 13px;
-            color: #2563eb;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        .vehicle-price {
-            font-size: 20px;
-            font-weight: 800;
-            color: #059669;
-            margin-bottom: 16px;
-        }
-        .unlock-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 15px;
-            transition: background 0.2s;
-        }
-        .unlock-btn:hover {
-            background: #1d4ed8;
-        }
-        footer {
-            text-align: center;
-            padding: 25px;
-            background: #0f172a;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <img src="1000232744.png" alt="Quilon Vehicles Banner" class="header-banner">[span_0](start_span)[span_0](end_span)
-        <button class="sell-toggle-btn" id="sellToggleBtn" onclick="toggleSellForm()">+ Click Here to Sell / Post Item</button>
-    </header>
-
-    <!-- Sell / Post Form -->
-    <div id="sellSection">
-        <h2 id="formHeading">Post Vehicle or Body Part</h2>
-        <div class="form-group">
-            <label id="lblCategory">Category</label>
-            <select id="vCategory">
-                <option value="Car">Car</option>
-                <option value="Bike">Bike / Scooter</option>
-                <option value="Body Parts">Body Parts</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label id="lblTitle">Item Name & Model</label>
-            <input type="text" id="vTitle" placeholder="Ex: Swift Bonnet / Maruti Swift 2019" required>
-        </div>
-        <div class="form-group">
-            <label id="lblDetails">Details (Condition, Year, Specs)</label>
-            <input type="text" id="vDetails" placeholder="Ex: Original condition | Good quality" required>
-        </div>
-        <div class="form-group">
-            <label id="lblLocation">Location (Ex: Pathanapuram, Punalur, Kollam)</label>
-            <input type="text" id="vLocation" placeholder="Ex: Pathanapuram" required>
-        </div>
-        <div class="form-group">
-            <label id="lblPrice">Expected Price (₹)</label>
-            <input type="number" id="vPrice" placeholder="Ex: 45000 or 420000" required>
-        </div>
-        <div class="form-group">
-            <label id="lblPhone">Owner's Phone Number</label>
-            <input type="tel" id="vPhone" placeholder="10-digit mobile number" required>
-        </div>
-        <div class="form-group">
-            <label id="lblPhoto">Upload Photo</label>
-            <div class="photo-buttons">
-                <label class="photo-btn" id="btnCamera">
-                    📷 Open Camera
-                    <input type="file" accept="image/*" capture="environment" style="display:none" onchange="previewImage(event)">
-                </label>
-                <label class="photo-btn" id="btnGallery">
-                    🖼️ From Gallery
-                    <input type="file" accept="image/*" style="display:none" onchange="previewImage(event)">
-                </label>
-            </div>
-            <img id="imagePreview" alt="Preview">
-        </div>
-        <button class="pay-sell-btn" id="btnPostItem" onclick="submitVehicle()">Post Item (₹10)</button>
-    </div>
-
-    <!-- Filter Controls -->
-    <div class="filter-bar">
-        <div class="top-menu-row">
-            <select id="languageSelect" class="language-selector" onchange="changeLanguage()">
-                <option value="en">🌐 English</option>
-                <option value="ml">മലയാളം (Malayalam)</option>
-                <option value="ta">தமிழ் (Tamil)</option>
-                <option value="hi">हिन्दी (Hindi)</option>
-                <option value="kn">ಕನ್ನಡ (Kannada)</option>
-                <option value="bn">বাংলা (Bengali)</option>
-            </select>
-        </div>
-
-        <div class="search-row">
-            <input type="text" id="searchInput" class="search-box" onkeyup="filterVehicles()" placeholder="🔍 Search item name...">
-            <input type="text" id="locationInput" class="location-filter" onkeyup="filterVehicles()" placeholder="📍 Location...">
-            <select id="priceFilter" class="price-filter" onchange="filterVehicles()">
-                <option value="All">💰 All Prices</option>
-                <option value="20000">Under ₹20,000</option>
-                <option value="50000">Under ₹50,000</option>
-                <option value="75000">Under ₹75,000</option>
-                <option value="100000">Under ₹1,00,000</option>
-                <option value="150000">Under ₹1,50,000</option>
-                <option value="200000">Under ₹2,00,000</option>
-                <option value="500000">Under ₹5,00,000</option>
-            </select>
-        </div>
-        
-        <div class="category-tabs">
-            <button class="tab-btn active" id="tabAll" onclick="setCategory('All', this)">All</button>
-            <button class="tab-btn" id="tabCar" onclick="setCategory('Car', this)">Cars</button>
-            <button class="tab-btn" id="tabBike" onclick="setCategory('Bike', this)">Bikes</button>
-            <button class="tab-btn" id="tabParts" onclick="setCategory('Body Parts', this)">Body Parts</button>
-        </div>
-    </div>
-
-    <!-- Listings Grid -->
-    <div class="container" id="vehicleContainer"></div>
-
-    <footer>
-        <p>&copy; 2026 Quilon Vehicles, Pathanapuram. All Rights Reserved.</p>
-    </footer>
-
-    <script>
-        let uploadedImageSrc = "";
-        let currentCategory = "All";
-
-        const translations = {
-            en: {
-                sellBtn: "+ Click Here to Sell / Post Item",
-                formTitle: "Post Vehicle or Body Part",
-                lblCategory: "Category",
-                lblTitle: "Item Name & Model",
-                lblDetails: "Details (Condition, Year, Specs)",
-                lblLocation: "Location (Ex: Pathanapuram, Punalur)",
-                lblPrice: "Expected Price in Numbers (Ex: 45000)",
-                lblPhone: "Owner's Phone Number",
-                lblPhoto: "Upload Photo",
-                btnCamera: "📷 Open Camera",
-                btnGallery: "🖼️ From Gallery",
-                btnPostItem: "Post Item (₹10)",
-                searchPh: "🔍 Search item name...",
-                locationPh: "📍 Location...",
-                tabAll: "All",
-                tabCar: "Cars",
-                tabBike: "Bikes",
-                tabParts: "Body Parts",
-                unlockBtn: "Unlock Owner Contact (₹20)",
-                noItems: "No items found."
-            },
-            ml: {
-                sellBtn: "+ വാഹനം / പാർട്സ് വിൽക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക",
-                formTitle: "വാഹനമോ ബോഡി പാർട്സോ പോസ്റ്റ് ചെയ്യുക",
-                lblCategory: "വിഭാഗം (Category)",
-                lblTitle: "പേരും മോഡലും",
-                lblDetails: "വിവരങ്ങൾ (വർഷം, കണ്ടീഷൻ)",
-                lblLocation: "സ്ഥലം (ഉദാ: പത്തനാപുരം)",
-                lblPrice: "വില അക്കത്തിൽ (ഉദാ: 45000)",
-                lblPhone: "ഓണറുടെ ഫോൺ നമ്പർ",
-                lblPhoto: "ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യുക",
-                btnCamera: "📷 ക്യാമറ തുറക്കുക",
-                btnGallery: "🖼️ ഗാലറിയിൽ നിന്ന്",
-                btnPostItem: "പോസ്റ്റ് ചെയ്യുക (₹10)",
-                searchPh: "🔍 പേര് തിരയുക...",
-                locationPh: "📍 സ്ഥലം...",
-                tabAll: "എല്ലാം",
-                tabCar: "കാറുകൾ",
-                tabBike: "ബൈക്കുകൾ",
-                tabParts: "ബോഡി പാർട്സ്",
-                unlockBtn: "ഓണറുടെ നമ്പർ ലഭിക്കാൻ (₹20)",
-                noItems: "വിവരങ്ങൾ ഒന്നും കണ്ടെത്തിയില്ല."
-            },
-            ta: {
-                sellBtn: "+ வாகனம் / பாகங்களை விற்க இங்கே கிளிக் செய்யவும்",
-                formTitle: "வாகனம் அல்லது பாகத்தைப் பதிவு செய்யவும்",
-                lblCategory: "வகை (Category)",
-                lblTitle: "பெயர் & மாடல்",
-                lblDetails: "விவரங்கள்",
-                lblLocation: "இடம்",
-                lblPrice: "விலை (எண்களில்)",
-                lblPhone: "தொலைபேசி எண்",
-                lblPhoto: "புகைப்படம்",
-                btnCamera: "📷 கேமரா",
-                btnGallery: "🖼️ கேலரி",
-                btnPostItem: "பதிவிடவும் (₹10)",
-                searchph: "🔍 தேட...",
-                locationPh: "📍 இடம்...",
-                tabAll: "அனைத்தும்",
-                tabCar: "கார்கள்",
-                tabBike: "பைக்குகள்",
-                tabParts: "உடல் பாகங்கள்",
-                unlockBtn: "தொடர்பு எண்ணைத் திறக்க (₹20)",
-                noItems: "எந்தப் பொருட்களும் கிடைக்கவில்லை."
-            },
-            hi: {
-                sellBtn: "+ वाहन या पार्ट्स बेचने के लिए यहाँ क्लिक करें",
-                formTitle: "वाहन या बॉडी पार्ट पोस्ट करें",
-                lblCategory: "श्रेणी",
-                lblTitle: "नाम और मॉडल",
-                lblDetails: "विवरण",
-                lblLocation: "स्थान",
-                lblPrice: "मूल्य (संख्या में)",
-                lblPhone: "फोन नंबर",
-                lblPhoto: "फोटो अपलोड करें",
-                btnCamera: "📷 कैमरा",
-                btnGallery: "🖼️ गैलरी",
-                btnPostItem: "पोस्ट करें (₹10)",
-                searchPh: "🔍 खोजें...",
-                locationPh: "📍 स्थान...",
-                tabAll: "सभी",
-                tabCar: "कारें",
-                tabBike: "बाइक्स",
-                tabParts: "बॉडी पार्ट्स",
-                unlockBtn: "मालिक का नंबर देखें (₹20)",
-                noItems: "कोई आइटम नहीं मिला।"
-            },
-            kn: {
-                sellBtn: "+ ವಾಹನ ಅಥವಾ ಭಾಗಗಳನ್ನು ಮಾರಾಟ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
-                formTitle: "ವಾಹನ ಅಥವಾ ಬಾಡಿ ಪಾರ್ಟ್ ಪೋಸ್ಟ್ ಮಾಡಿ",
-                lblCategory: "ವರ್ಗ",
-                lblTitle: "ಹೆಸರು ಮತ್ತು ಮಾದರಿ",
-                lblDetails: "ವಿವರಗಳು",
-                lblLocation: "ಸ್ಥಳ",
-                lblPrice: "ಬೆಲೆ (ಸಂಖ್ಯೆಯಲ್ಲಿ)",
-                lblPhone: "ಫೋನ್ ಸಂಖ್ಯೆ",
-                lblPhoto: "ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
-                btnCamera: "📷 ಕ್ಯಾಮೆರಾ",
-                btnGallery: "🖼️ ಗ್ಯಾಲರಿ",
-                btnPostItem: "ಪೋಸ್ಟ್ ಮಾಡಿ (₹10)",
-                searchPh: "🔍 ಹುಡುಕಿ...",
-                locationPh: "📍 ಸ್ಥಳ...",
-                tabAll: "ಎಲ್ಲಾ",
-                tabCar: "ಕಾರುಗಳು",
-                tabBike: "ಬೈಕುಗಳು",
-                tabParts: "ಬಾಡಿ ಪಾರ್ಟ್ಸ್",
-                unlockBtn: "ಮಾಲೀಕರ ನಂಬರ್ ಪಡೆಯಿರಿ (₹20)",
-                noItems: "ಯಾವುದೇ ವಸ್ತುಗಳು ಕಂಡುಬಂದಿಲ್ಲ."
-            },
-            bn: {
-                sellBtn: "+ গাড়ি বা পার্টস বিক্রি করতে এখানে ক্লিক করুন",
-                formTitle: "যানবাহন বা পার্টস পোস্ট করুন",
-                lblCategory: "বিভাগ",
-                lblTitle: "নাম এবং মডেল",
-                lblDetails: "বিস্তারিত",
-                lblLocation: "অবস্থান",
-                lblPrice: "মূল্য (সংখ্যায়)",
-                lblPhone: "ফোন নম্বর",
-                lblPhoto: "ছবি আপলোড করুন",
-                btnCamera: "📷 ক্যামেরা",
-                btnGallery: "🖼️ গ্যালারি",
-                btnPostItem: "পোস্ট করুন (₹10)",
-                searchPh: "🔍 অনুসন্ধান করুন...",
-                locationPh: "📍 অবস্থান...",
-                tabAll: "সব",
-                tabCar: "গাড়ি",
-                tabBike: "বাইক",
-                tabParts: "বডি পার্টস",
-                unlockBtn: "মালিকের নম্বর আনলক করুন (₹20)",
-                noItems: "কোনো আইটেম পাওয়া যায়নি।"
-            }
-        };
-
-        function changeLanguage() {
-            const lang = document.getElementById('languageSelect').value;
-            const t = translations[lang] || translations['en'];
-
-            document.getElementById('sellToggleBtn').innerText = t.sellBtn;
-            document.getElementById('formHeading').innerText = t.formTitle;
-            document.getElementById('lblCategory').innerText = t.lblCategory;
-            document.getElementById('lblTitle').innerText = t.lblTitle;
-            document.getElementById('lblDetails').innerText = t.lblDetails;
-            document.getElementById('lblLocation').innerText = t.lblLocation;
-            document.getElementById('lblPrice').innerText = t.lblPrice;
-            document.getElementById('lblPhone').innerText = t.lblPhone;
-            document.getElementById('lblPhoto').innerText = t.lblPhoto;
-            document.getElementById('btnCamera').childNodes[0].nodeValue = " " + t.btnCamera + " ";
-            document.getElementById('btnGallery').childNodes[0].nodeValue = " " + t.btnGallery + " ";
-            document.getElementById('btnPostItem').innerText = t.btnPostItem;
-            document.getElementById('searchInput').placeholder = t.searchPh;
-            document.getElementById('locationInput').placeholder = t.locationPh;
-            document.getElementById('tabAll').innerText = t.tabAll;
-            document.getElementById('tabCar').innerText = t.tabCar;
-            document.getElementById('tabBike').innerText = t.tabBike;
-            document.getElementById('tabParts').innerText = t.tabParts;
-
-            renderVehicles();
-        }
-
-        const defaultVehicles = [
-            {
-                category: "Car",
-                title: "Maruti Suzuki Swift",
-                details: "Model: 2018 | Diesel | 55,000 km",
-                location: "Pathanapuram",
-                rawPrice: 450000,
-                price: "4,50,000",
-                phone: "9847000001",
-                image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                category: "Body Parts",
-                title: "Swift Front Bumper & Grill",
-                details: "Original OEM part | Painted white",
-                location: "Punalur",
-                rawPrice: 3500,
-                price: "3,500",
-                phone: "9847000002",
-                image: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                category: "Bike",
-                title: "Royal Enfield Classic 350",
-                details: "Model: 2020 | Petrol | 22,000 km",
-                location: "Kollam",
-                rawPrice: 145000,
-                price: "1,45,000",
-                phone: "9847000003",
-                image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=500&q=60"
-            }
-        ];
-
-        let vehicles = JSON.parse(localStorage.getItem('quilonVehicles')) || defaultVehicles;
-
-        function renderVehicles() {
-            const container = document.getElementById('vehicleContainer');
-            const searchText = document.getElementById('searchInput').value.toLowerCase();
-            const locationText = document.getElementById('locationInput').value.toLowerCase();
-            const maxPrice = document.getElementById('priceFilter').value;
-            const lang = document.getElementById('languageSelect').value;
-            const t = translations[lang] || translations['en'];
-            container.innerHTML = "";
-
-            const filtered = vehicles.filter(v => {
-                const matchesCategory = (currentCategory === "All" || v.category === currentCategory);
-                const matchesSearch = v.title.toLowerCase().includes(searchText) || v.details.toLowerCase().includes(searchText);
-                const matchesLocation = !v.location || v.location.toLowerCase().includes(locationText);
-                
-                let matchesPrice = true;
-                if (maxPrice !== "All") {
-                    matchesPrice = (v.rawPrice <= parseInt(maxPrice));
-                }
-
-                return matchesCategory && matchesSearch && matchesLocation && matchesPrice;
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<p style='text-align:center; grid-column: 1/-1; color:#64748b; padding:30px;'>${t.noItems}</p>`;
-                return;
-            }
-
-            filtered.forEach((v) => {
-                const card = `
-                    <div class="vehicle-card">
-                        <div class="img-wrapper">
-                            <span class="badge">${v.category}</span>
-                            <img src="${v.image}" alt="${v.title}" class="vehicle-img">
-                        </div>
-                        <div class="vehicle-info">
-                            <div class="vehicle-title">${v.title}</div>
-                            <div class="vehicle-details">${v.details}</div>
-                            <div class="vehicle-location">📍 ${v.location || 'Location not specified'}</div>
-                            <div class="vehicle-price">₹ ${v.price}</div>
-                            <button onclick="unlockContact('${v.phone}')" class="unlock-btn">
-                                ${t.unlockBtn}
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', card);
-            });
-        }
-
-        function unlockContact(phone) {
-            window.open("https://razorpay.me/@arunkr/20", "_blank");
-            setTimeout(() => {
-                alert("Owner Contact Number: " + phone);
-            }, 1000);
-        }
-
-        function setCategory(cat, btn) {
-            currentCategory = cat;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderVehicles();
-        }
-
-        function filterVehicles() {
-            renderVehicles();
-        }
-
-        function toggleSellForm() {
-            const form = document.getElementById('sellSection');
-            if (form.style.display === 'block') {
-                form.style.display = 'none';
-            } else {
-                form.style.display = 'block';
-                form.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    uploadedImageSrc = e.target.result;
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = uploadedImageSrc;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function submitVehicle() {
-            const category = document.getElementById('vCategory').value;
-            const title = document.getElementById('vTitle').value;
-            const details = document.getElementById('vDetails').value;
-            const location = document.getElementById('vLocation').value;
-            const rawPriceInput = document.getElementById('vPrice').value;
-            const phone = document.getElementById('vPhone').value;
-
-            if (!title || !details || !location || !rawPriceInput || !phone || !uploadedImageSrc) {
-                alert("Please fill all details and upload a photo!");
-                return;
-            }
-
-            const rawPrice = parseInt(rawPriceInput) || 0;
-            const formattedPrice = Number(rawPrice).toLocaleString('en-IN');
-
-            window.open("https://razorpay.me/@arunkr/10", "_blank");
-
-            // New items are added to the beginning (unshift) so they appear first!
-            vehicles.unshift({
-                category: category,
-                title: title,
-                details: details,
-                location: location,
-                rawPrice: rawPrice,
-                price: formattedPrice,
-                phone: phone,
-                image: uploadedImageSrc
-            });
-            localStorage.setItem('quilonVehicles', JSON.stringify(vehicles));
-            renderVehicles();
-
-            document.getElementById('vTitle').value = "";
-            document.getElementById('vDetails').value = "";
-            document.getElementById('vLocation').value = "";
-            document.getElementById('vPrice').value = "";
-            document.getElementById('vPhone').value = "";
-            document.getElementById('imagePreview').style.display = 'none';
-            uploadedImageSrc = "";
-            toggleSellForm();
-
-            alert("Item posted successfully! Please complete the ₹10 payment.");
-        }
-
-        renderVehicles();
-    </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quilon Vehicles & Parts</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
@@ -755,7 +19,8 @@
         .post-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 15px; position: relative; }
         .post-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; }
         .price { color: #2a9d8f; font-size: 18px; font-weight: bold; }
-        .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
+        .suggestion-box { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; z-index: 1000; border-radius: 0 0 5px 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -788,8 +53,9 @@
             
             <select id="categoryFilter" onchange="filterPosts()">
                 <option value="">All Categories</option>
-                <option value="Car">Cars</option>
                 <option value="Bike">Bikes</option>
+                <option value="Car">Cars</option>
+                <option value="Auto">Autos</option>
                 <option value="Part">Body Parts</option>
             </select>
 
@@ -808,29 +74,43 @@
                 <option value="5lakhs">Under ₹5 Lakhs</option>
             </select>
 
-            <input type="text" id="locationFilter" placeholder="Filter by Location (e.g. Pathanapuram, Kollam)" onkeyup="filterPosts()">
+            <!-- Location Filter with Auto-suggestions -->
+            <div style="position: relative; display: inline-block; width: 100%;">
+                <input type="text" id="locationFilter" placeholder="Filter by Location (e.g. Pathanapuram, Kollam)" onkeyup="showLocationSuggestions()" autocomplete="off">
+                <div id="locationSuggestions" class="suggestion-box"></div>
+            </div>
         </div>
 
         <!-- Post New Ad Form -->
         <div class="form-container">
-            <h3 id="txtPostAd">Post Your Ad (Posting Fee: ₹10)</h3>
+            <h3 id="txtPostAd">Post Your Ad</h3>
             <input type="text" id="postTitle" placeholder="Vehicle / Part Name">
-            <select id="postCategory">
-                <option value="Car">Car</option>
-                <option value="Bike">Bike</option>
-                <option value="Part">Body Part</option>
+            
+            <select id="postCategory" onchange="updateFeesText()">
+                <option value="Bike">Bike (Posting Fee: ₹20)</option>
+                <option value="Car">Car (Posting Fee: ₹20)</option>
+                <option value="Auto">Auto (Posting Fee: ₹30)</option>
+                <option value="Part">Body Part (Posting Fee: ₹20)</option>
             </select>
+
             <select id="postFuel">
                 <option value="petrol">Petrol</option>
                 <option value="diesel">Diesel</option>
                 <option value="ev">Electric (EV)</option>
                 <option value="cng">CNG</option>
             </select>
+
             <input type="number" id="postPrice" placeholder="Price in ₹">
-            <input type="text" id="postLocation" placeholder="Location">
+            
+            <!-- Post Location with Auto-suggestions -->
+            <div style="position: relative; display: inline-block; width: 100%;">
+                <input type="text" id="postLocation" placeholder="Location (e.g. Pathanapuram)" onkeyup="showPostLocationSuggestions()" autocomplete="off">
+                <div id="postLocationSuggestions" class="suggestion-box"></div>
+            </div>
+
             <input type="file" id="postImage" accept="image/*">
             <textarea id="postContact" placeholder="Contact Details"></textarea>
-            <button onclick="submitPost()" id="btnSubmit">Publish Ad (Pay ₹10)</button>
+            <button onclick="submitPost()" id="btnSubmit">Publish Ad (Pay ₹20)</button>
         </div>
 
         <!-- Posts Display Area -->
@@ -839,23 +119,96 @@
     </div>
 
     <script>
+        // Kollam Locations List (Alphabetical order)
+        const kollamLocations = [
+            "Anchal", "Chadayamangalam", "Kadavoor", "Kallumkadavu", "Kollam", 
+            "Kottarakkara", "Kundara", "Nedumparambu", "Pathanapuram", "Punalur", "Sasthamcotta"
+        ].sort();
+
+        function showLocationSuggestions() {
+            const inputField = document.getElementById('locationFilter');
+            const inputVal = inputField.value.toLowerCase();
+            const suggestionBox = document.getElementById('locationSuggestions');
+            suggestionBox.innerHTML = '';
+
+            if (inputVal.length === 0) {
+                filterPosts();
+                return;
+            }
+
+            const matches = kollamLocations.filter(item => item.toLowerCase().includes(inputVal));
+
+            matches.forEach(place => {
+                const div = document.createElement('div');
+                div.style.padding = '10px';
+                div.style.cursor = 'pointer';
+                div.style.borderBottom = '1px solid #eee';
+                div.innerText = place;
+
+                div.onclick = function() {
+                    inputField.value = place;
+                    suggestionBox.innerHTML = '';
+                    filterPosts();
+                };
+
+                div.onmouseover = function() { div.style.background = '#f2f2f2'; };
+                div.onmouseout = function() { div.style.background = 'white'; };
+
+                suggestionBox.appendChild(div);
+            });
+            filterPosts();
+        }
+
+        function showPostLocationSuggestions() {
+            const inputField = document.getElementById('postLocation');
+            const inputVal = inputField.value.toLowerCase();
+            const suggestionBox = document.getElementById('postLocationSuggestions');
+            suggestionBox.innerHTML = '';
+
+            if (inputVal.length === 0) return;
+
+            const matches = kollamLocations.filter(item => item.toLowerCase().includes(inputVal));
+
+            matches.forEach(place => {
+                const div = document.createElement('div');
+                div.style.padding = '10px';
+                div.style.cursor = 'pointer';
+                div.style.borderBottom = '1px solid #eee';
+                div.innerText = place;
+
+                div.onclick = function() {
+                    inputField.value = place;
+                    suggestionBox.innerHTML = '';
+                };
+
+                div.onmouseover = function() { div.style.background = '#f2f2f2'; };
+                div.onmouseout = function() { div.style.background = 'white'; };
+
+                suggestionBox.appendChild(div);
+            });
+        }
+
+        function updateFeesText() {
+            const cat = document.getElementById('postCategory').value;
+            const btn = document.getElementById('btnSubmit');
+            if(cat === 'Auto') {
+                btn.innerText = "Publish Ad (Pay ₹30)";
+            } else {
+                btn.innerText = "Publish Ad (Pay ₹20)";
+            }
+        }
+
         // Translations Dictionary
         const translations = {
-            en: { tagline: "Buy & Sell Cars, Bikes, and Body Parts in Kollam", searchFilter: "Search & Filter", postAd: "Post Your Ad (Posting Fee: ₹10)", recentPosts: "Latest Posts", submitBtn: "Publish Ad (Pay ₹10)" },
-            ml: { tagline: "കൊല്ലത്തs കാറുകളും ബൈക്കുകളും സ്പെയർ പാർട്സുകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", postAd: "പരസ്യം നൽകൂ (പോസ്റ്റിംഗ് ഫീസ്: ₹10)", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ", submitBtn: "പോസ്റ്റ് ചെയ്യുക (₹10 അടയ്ക്കുക)" },
-            hi: { tagline: "कोल्लम में कार, बाइक और बॉडी पार्ट्स खरीदें और बेचें", searchFilter: "खोज और फ़िल्टर", postAd: "विज्ञापन पोस्ट करें (शुल्क: ₹10)", recentPosts: "नवीनतम पोस्ट", submitBtn: "विज्ञापन प्रकाशित करें" },
-            ta: { tagline: "கொல்லத்தில் கார், பைக் மற்றும் ஸ்பேர் பகுதிகளை வாங்குங்கள் & விற்கவும்", searchFilter: "தேடல் & வடிகட்டி", postAd: "விளம்பரத்தை வெளியிடவும் (கட்டணம்: ₹10)", recentPosts: "சமீபத்திய பதிவுகள்", submitBtn: "வெளியிடவும்" },
-            kn: { tagline: "ಕೊಲ್ಲಂನಲ್ಲಿ ಕಾರುಗಳು, ಬೈಕ್‌ಗಳು ಮತ್ತು ಬಾಡಿ ಪಾರ್ಟ್‌ಗಳನ್ನು ಖರೀದಿಸಿ ಮತ್ತು ಮಾರಾಟ ಮಾಡಿ", searchFilter: "ಹುಡುಕಾಟ ಮತ್ತು ಫಿಲ್ಟರ್", postAd: "বিজ্ঞাপন পোস্ট করুন", recentPosts: "ಇತ್ತೀಚಿನ ಪೋಸ್ಟ್‌ಗಳು", submitBtn: "ಪ್ರಕಟಿಸಿ" },
-            bn: { tagline: "কোলামে গাড়ি, বাইক এবং যন্ত্রাংশ কেনা বেচা করুন", searchFilter: "অনুসন্ধান এবং ফিল্টার", postAd: "বিজ্ঞাপন পোস্ট করুন (ফি: ₹10)", recentPosts: "সর্বশেষ পোস্ট", submitBtn: "প্রকাশ করুন" }
+            en: { tagline: "Buy & Sell Cars, Bikes, and Body Parts in Kollam", searchFilter: "Search & Filter", recentPosts: "Latest Posts" },
+            ml: { tagline: "കൊല്ലത്ത് കാറുകളും ബൈക്കുകളും സ്പെയർ പാർട്സുകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ" }
         };
 
         function setLanguage(lang) {
             localStorage.setItem('quilon_lang', lang);
-            document.getElementById('tagline').innerText = translations[lang].tagline;
-            document.getElementById('txtSearchFilter').innerText = translations[lang].searchFilter;
-            document.getElementById('txtPostAd').innerText = translations[lang].postAd;
-            document.getElementById('txtRecentPosts').innerText = translations[lang].recentPosts;
-            document.getElementById('btnSubmit').innerText = translations[lang].submitBtn;
+            document.getElementById('tagline').innerText = translations[lang] ? translations[lang].tagline : translations['en'].tagline;
+            document.getElementById('txtSearchFilter').innerText = translations[lang] ? translations[lang].searchFilter : translations['en'].searchFilter;
+            document.getElementById('txtRecentPosts').innerText = translations[lang] ? translations[lang].recentPosts : translations['en'].recentPosts;
         }
 
         window.onload = function() {
@@ -878,27 +231,29 @@
                 return;
             }
 
+            let postFee = (category === 'Auto') ? 30 : 20;
+
             const reader = new FileReader();
             if(imageInput.files && imageInput.files[0]) {
                 reader.readAsDataURL(imageInput.files[0]);
                 reader.onload = function(e) {
-                    savePostData(title, category, fuel, price, location, contact, e.target.result);
+                    savePostData(title, category, fuel, price, location, contact, e.target.result, postFee);
                 }
             } else {
-                savePostData(title, category, fuel, price, location, contact, '');
+                savePostData(title, category, fuel, price, location, contact, '', postFee);
             }
         }
 
-        function savePostData(title, category, fuel, price, location, contact, image) {
+        function savePostData(title, category, fuel, price, location, contact, image, postFee) {
             let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
             const newPost = {
                 id: Date.now(),
                 title, category, fuel, price, location, contact, image,
-                date: new Date().getTime()
+                date: new Date().getTime() // 30 ദിവസ കാലാവധിക്ക് കണക്കാക്കാൻ
             };
-            posts.unshift(newPost); // Latest post first
+            posts.unshift(newPost);
             localStorage.setItem('quilon_posts', JSON.stringify(posts));
-            alert("Payment simulated: ₹10 deducted. Ad Posted Successfully!");
+            alert(`Payment simulated: ₹${postFee} deducted. Ad Posted Successfully!`);
             location.reload();
         }
 
@@ -914,13 +269,15 @@
             filterPosts();
         }
 
-        function unlockContact(postId) {
+        function unlockContact(postId, category) {
             let unlocked = JSON.parse(localStorage.getItem('quilon_unlocked')) || [];
+            let unlockFee = (category === 'Car' || category === 'Auto') ? 30 : 20;
+
             if(!unlocked.includes(postId)) {
-                if(confirm("Unlock contact details for ₹20?")) {
+                if(confirm(`Unlock contact details for ₹${unlockFee}?`)) {
                     unlocked.push(postId);
                     localStorage.setItem('quilon_unlocked', JSON.stringify(unlocked));
-                    alert("Payment simulated: ₹20 deducted.");
+                    alert(`Payment simulated: ₹${unlockFee} deducted.`);
                     filterPosts();
                 }
             }
@@ -932,6 +289,14 @@
 
         function filterPosts() {
             let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+            
+            // 30 ദിവസത്തിൽ കൂടുതൽ പഴക്കമുള്ള പോസ്റ്റുകൾ ഓട്ടോമാറ്റിക്കായി നീക്കം ചെയ്യുന്നു
+            const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+            const currentTime = new Date().getTime();
+            
+            posts = posts.filter(p => (currentTime - (p.date || 0)) < thirtyDaysInMillis);
+            localStorage.setItem('quilon_posts', JSON.stringify(posts));
+
             let favorites = JSON.parse(localStorage.getItem('quilon_favorites')) || [];
             let unlocked = JSON.parse(localStorage.getItem('quilon_unlocked')) || [];
 
@@ -959,13 +324,14 @@
             });
 
             if(filtered.length === 0) {
-                container.innerHTML = "<p>No posts found.</p>";
+                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #777;'>No posts found. Be the first one to post!</p>";
                 return;
             }
 
             filtered.forEach(p => {
                 const isFav = favorites.includes(p.id);
                 const isUnlocked = unlocked.includes(p.id);
+                const unlockFee = (p.category === 'Car' || p.category === 'Auto') ? 30 : 20;
 
                 const card = document.createElement('div');
                 card.className = 'post-card';
@@ -975,9 +341,11 @@
                     <h3>${p.title}</h3>
                     <p><b>Category:</b> ${p.category} | <b>Fuel:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
                     <p class="price">₹ ${p.price}</p>
-                    <p>📍 ${p.location}</p>
+                    <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}" target="_blank" style="color: #2a9d8f; text-decoration: none; font-weight: bold;">
+                        ${p.location} (Map-ൽ കാണുക)
+                    </a></p>
                     <div>
-                        ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id})">Unlock Contact (₹20)</button>`}
+                        ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id}, '${p.category}')">Unlock Contact (₹${unlockFee})</button>`}
                     </div>
                 `;
                 container.appendChild(card);
@@ -986,44 +354,3 @@
     </script>
 </body>
 </html>
-// Kollam/Local sthalangalinte list
-const kollamLocations = [
-    "Pathanapuram", "Kottarakkara", "Punalur", "Kollam", "Chadayamangalam", 
-    "Anchal", "Kadavoor", "Nedumparambu", "Kallumkadavu", "Kundara", 
-    "Karunagappally", "Paravur", "Sasthamcotta", "Kottarakkara", "Pathanapuram Town"
-];
-
-function showLocationSuggestions() {
-    const input = document.getElementById('postLocation').value.toLowerCase();
-    const suggestionBox = document.getElementById('locationSuggestions');
-    suggestionBox.innerHTML = '';
-
-    if (input.length === 0) {
-        return;
-    }
-
-    // Alphabetic order-il sort cheythu matching sthalangal edukku
-    const filteredLocs = kollamLocations
-        .filter(loc => loc.toLowerCase().includes(input))
-        .sort();
-
-    filteredLocs.forEach(loc => {
-        const div = document.createElement('div');
-        div.style.padding = '8px 12px';
-        div.style.cursor = 'pointer';
-        div.style.borderBottom = '1px solid #eee';
-        div.innerText = loc;
-        
-        // Click cheythal input-il a sthalam vannu irikkum
-        div.onclick = function() {
-            document.getElementById('postLocation').value = loc;
-            suggestionBox.innerHTML = '';
-        };
-
-        // Hover effect
-        div.onmouseover = function() { div.style.background = '#f0f0f0'; };
-        div.onmouseout = function() { div.style.background = 'white'; };
-
-        suggestionBox.appendChild(div);
-    });
-}
