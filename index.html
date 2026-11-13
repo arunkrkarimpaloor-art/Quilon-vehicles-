@@ -18,18 +18,24 @@
         
         /* 3 Dots Menu Styles */
         .menu-icon { font-size: 24px; cursor: pointer; padding: 5px 12px; background: #0284c7; color: white; border-radius: 5px; user-select: none; }
-        .dropdown-menu { display: none; position: absolute; top: 70px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 220px; z-index: 1000; padding: 15px; }
+        .dropdown-menu { display: none; position: absolute; top: 70px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 280px; z-index: 1000; padding: 15px; max-height: 80vh; overflow-y: auto; }
         .dropdown-menu.active { display: block; }
         .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 10px; display: block; color: #555; }
 
-        /* Container with extra bottom padding to prevent mobile floating bar overlap */
+        /* Modal/Popup for Posting Ad */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: #dcfce7; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; border: 1px solid #bbf7d0; position: relative; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; font-weight: bold; color: #333; }
+
+        /* Container with extra bottom padding */
         .container { padding: 20px 20px 80px 20px; max-width: 1200px; margin: auto; }
         
-        /* Filters and Form Container background */
-        .filters, .form-container { background: #dcfce7; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        /* Search Bar Container background */
+        .search-container { background: #dcfce7; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
         
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; background: #ffffff; }
-        button { background: #16a34a; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button { background: #16a34a; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
         button:hover { background: #15803d; }
         
         .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
@@ -38,6 +44,8 @@
         .price { color: #047857; font-size: 18px; font-weight: bold; }
         .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
         .suggestion-box { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; z-index: 1000; border-radius: 0 0 5px 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .menu-btn-action { background: #2563eb; color: white; margin-bottom: 10px; text-align: center; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .menu-btn-action:hover { background: #1d4ed8; }
     </style>
 </head>
 <body>
@@ -58,11 +66,17 @@
         <!-- 3 Dots Menu Button -->
         <div>
             <div class="menu-icon" onclick="toggleDropdown(event)">⋮</div>
-            <!-- Dropdown Options Box -->
+            <!-- Dropdown Options Box (Contains Filters & Post Option) -->
             <div id="dropdownMenu" class="dropdown-menu">
-                <label>Language</label>
-                <select id="languageSelect" onchange="changeLanguage()">
-                    <option value="en">English</option>
+                <div class="menu-btn-action" onclick="openPostModal()">+ Post Your Ad</div>
+
+                <label>Category Filter</label>
+                <select id="categoryFilter" onchange="filterPosts()">
+                    <option value="">All Categories</option>
+                    <option value="Bike">Bikes</option>
+                    <option value="Car">Cars</option>
+                    <option value="Auto">Autos</option>
+                    <option value="Part">Body Parts</option>
                 </select>
 
                 <label>Price Filter</label>
@@ -90,35 +104,11 @@
         <img src="1000232744.png" alt="Banner" onerror="this.style.display='none'">
     </div>
 
-    <div class="container">
-        <!-- Search & Filters -->
-        <div class="filters">
-            <h3 id="txtSearchFilter">Search & Filter</h3>
-            
-            <!-- Search Input with Auto-suggestions for Spelling Matching -->
-            <div style="position: relative; display: inline-block; width: 100%;">
-                <input type="text" id="searchInput" placeholder="Search vehicles or parts (e.g. Bullet, Splendor)..." onkeyup="handleSearchInput()" autocomplete="off">
-                <div id="searchSuggestions" class="suggestion-box"></div>
-            </div>
-            
-            <select id="categoryFilter" onchange="filterPosts()">
-                <option value="">All Categories</option>
-                <option value="Bike">Bikes</option>
-                <option value="Car">Cars</option>
-                <option value="Auto">Autos</option>
-                <option value="Part">Body Parts</option>
-            </select>
-
-            <!-- Location Filter with Auto-suggestions -->
-            <div style="position: relative; display: inline-block; width: 100%;">
-                <input type="text" id="locationFilter" placeholder="Filter by Location (e.g. Pathanapuram, Kollam)" onkeyup="showLocationSuggestions()" autocomplete="off">
-                <div id="locationSuggestions" class="suggestion-box"></div>
-            </div>
-        </div>
-
-        <!-- Post New Ad Form -->
-        <div class="form-container">
-            <h3 id="txtPostAd">Post Your Ad</h3>
+    <!-- Post Ad Modal (Popup) -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePostModal()">&times;</span>
+            <h3 id="txtPostAd" style="margin-top:0;">Post Your Ad</h3>
             <input type="text" id="postTitle" placeholder="Vehicle / Part Name (e.g. Royal Enfield)">
             
             <select id="postCategory" onchange="updateFeesText()">
@@ -145,7 +135,26 @@
 
             <input type="file" id="postImage" accept="image/*">
             <textarea id="postContact" placeholder="Contact Details"></textarea>
-            <button onclick="submitPost()" id="btnSubmit">Publish Ad (Pay ₹20)</button>
+            <button onclick="submitPost()" id="btnSubmit" style="margin-top: 10px;">Publish Ad (Pay ₹20)</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Main Search & Location Filter -->
+        <div class="search-container">
+            <h3 id="txtSearchFilter">Search & Location</h3>
+            
+            <!-- Search Input with Auto-suggestions for Spelling Matching -->
+            <div style="position: relative; display: inline-block; width: 100%; margin-bottom: 8px;">
+                <input type="text" id="searchInput" placeholder="Search vehicles or parts (e.g. Bullet, Splendor)..." onkeyup="handleSearchInput()" autocomplete="off">
+                <div id="searchSuggestions" class="suggestion-box"></div>
+            </div>
+            
+            <!-- Location Filter with Auto-suggestions -->
+            <div style="position: relative; display: inline-block; width: 100%;">
+                <input type="text" id="locationFilter" placeholder="Filter by Location (e.g. Pathanapuram, Kollam)" onkeyup="showLocationSuggestions()" autocomplete="off">
+                <div id="locationSuggestions" class="suggestion-box"></div>
+            </div>
         </div>
 
         <!-- Posts Display Area -->
@@ -162,12 +171,21 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.menu-icon')) {
+            if (!event.target.matches('.menu-icon') && !event.target.closest('.dropdown-menu')) {
                 const dropdown = document.getElementById('dropdownMenu');
                 if (dropdown && dropdown.classList.contains('active')) {
                     dropdown.classList.remove('active');
                 }
             }
+        }
+
+        function openPostModal() {
+            document.getElementById('postModal').classList.add('active');
+            document.getElementById('dropdownMenu').classList.remove('active');
+        }
+
+        function closePostModal() {
+            document.getElementById('postModal').classList.remove('active');
         }
 
         // Kollam Locations List
@@ -266,8 +284,6 @@
                 btn.innerText = "Publish Ad (Pay ₹20)";
             }
         }
-
-        function changeLanguage() {}
 
         window.onload = function() {
             loadPosts();
