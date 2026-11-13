@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quilon Vehicles & Parts</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #eaf4f4; color: #333; }
+        /* Overall Page Background Color (White space-il muzhuvan yellow/green color varan) */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #fef08a; color: #333; }
         
         /* Top Most Dark Golden Bar */
         .top-gold-bar { background-color: #b8860b; color: white; text-align: center; padding: 6px; font-size: 13px; font-weight: bold; }
@@ -23,15 +24,15 @@
 
         .container { padding: 20px; max-width: 1200px; margin: auto; }
         
-        /* Background Color Modified to Light Yellow / Green mix style */
-        .filters, .form-container { background: #fef9c3; padding: 15px; border-radius: 8px; border: 1px solid #fde047; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        /* Filters and Form Container background */
+        .filters, .form-container { background: #dcfce7; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
         
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; background: #ffffff; }
         button { background: #16a34a; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         button:hover { background: #15803d; }
         
         .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .post-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.08); padding: 15px; position: relative; }
+        .post-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.08); padding: 15px; position: relative; }
         .post-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; background-color: #ddd; }
         .price { color: #047857; font-size: 18px; font-weight: bold; }
         .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
@@ -42,7 +43,7 @@
 
     <!-- Top Dark Golden Bar -->
     <div class="top-gold-bar">
-        ⭐ Welcome to Quilon Vehicles Hub - Pathanapuram ⭐
+        Welcome to Quilon Vehicles Hub - Pathanapuram
     </div>
 
     <!-- Header with Light Blue Background -->
@@ -58,15 +59,12 @@
             <div class="menu-icon" onclick="toggleDropdown(event)">⋮</div>
             <!-- Dropdown Options Box -->
             <div id="dropdownMenu" class="dropdown-menu">
-                <label>🌐 Language / ഭാഷ</label>
+                <label>Language</label>
                 <select id="languageSelect" onchange="changeLanguage()">
-                    <option value="ml">മലയാളം</option>
                     <option value="en">English</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="ta">தமிழ்</option>
                 </select>
 
-                <label>💰 Price Filter</label>
+                <label>Price Filter</label>
                 <select id="priceFilter" onchange="filterPosts()">
                     <option value="">All Prices</option>
                     <option value="20k">Under ₹20,000</option>
@@ -74,7 +72,7 @@
                     <option value="5lakhs">Under ₹5 Lakhs</option>
                 </select>
 
-                <label>⛽ Fuel Type</label>
+                <label>Fuel Type</label>
                 <select id="fuelFilter" onchange="filterPosts()">
                     <option value="">All Fuel Types</option>
                     <option value="petrol">Petrol</option>
@@ -245,23 +243,9 @@
             }
         }
 
-        const translations = {
-            en: { tagline: "Buy & Sell Cars, Bikes, and Autos in Kollam", searchFilter: "Search & Filter", recentPosts: "Latest Posts" },
-            ml: { tagline: "കൊല്ലത്ത് കാറുകളും ബൈക്കുകളും ഓട്ടോകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ" }
-        };
-
-        function changeLanguage() {
-            const lang = document.getElementById('languageSelect').value;
-            localStorage.setItem('quilon_lang', lang);
-            document.getElementById('tagline').innerText = translations[lang] ? translations[lang].tagline : translations['en'].tagline;
-            document.getElementById('txtSearchFilter').innerText = translations[lang] ? translations[lang].searchFilter : translations['en'].searchFilter;
-            document.getElementById('txtRecentPosts').innerText = translations[lang] ? translations[lang].recentPosts : translations['en'].recentPosts;
-        }
+        function changeLanguage() {}
 
         window.onload = function() {
-            const savedLang = localStorage.getItem('quilon_lang') || 'ml';
-            document.getElementById('languageSelect').value = savedLang;
-            changeLanguage();
             loadPosts();
         };
 
@@ -371,7 +355,7 @@
             });
 
             if(filtered.length === 0) {
-                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #555;'>No posts found. Be the first one to post!</p>";
+                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #333; font-weight: bold;'>No posts found. Be the first one to post!</p>";
                 return;
             }
 
@@ -389,7 +373,7 @@
                     <p><b>Category:</b> ${p.category} | <b>Fuel:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
                     <p class="price">₹ ${p.price}</p>
                     <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}" target="_blank" style="color: #047857; text-decoration: none; font-weight: bold;">
-                        ${p.location} (Map-ൽ കാണുക)
+                        ${p.location} (View on Map)
                     </a></p>
                     <div>
                         ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id}, '${p.category}')">Unlock Contact (₹${unlockFee})</button>`}
