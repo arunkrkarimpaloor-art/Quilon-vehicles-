@@ -5,38 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quilon Vehicles & Parts</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
-        header { background: #1b263b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #eaf4f4; color: #333; }
+        
+        /* Top Most Dark Golden Bar */
+        .top-gold-bar { background-color: #b8860b; color: white; text-align: center; padding: 6px; font-size: 13px; font-weight: bold; }
+
+        /* Main Header with Light Blue */
+        header { background: #38bdf8; color: #0f172a; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .header-title { text-align: center; flex-grow: 1; }
         .banner img { width: 100%; max-height: 200px; object-fit: cover; }
         
         /* 3 Dots Menu Styles */
-        .menu-icon { font-size: 24px; cursor: pointer; padding: 5px 10px; background: #415a77; border-radius: 5px; user-select: none; }
-        .dropdown-menu { display: none; position: absolute; top: 60px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 220px; z-index: 1000; padding: 15px; }
+        .menu-icon { font-size: 24px; cursor: pointer; padding: 5px 12px; background: #0284c7; color: white; border-radius: 5px; user-select: none; }
+        .dropdown-menu { display: none; position: absolute; top: 70px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 220px; z-index: 1000; padding: 15px; }
         .dropdown-menu.active { display: block; }
         .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 10px; display: block; color: #555; }
 
         .container { padding: 20px; max-width: 1200px; margin: auto; }
-        .filters, .form-container { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { background: #e0a96d; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #c68b59; }
+        
+        /* Background Color Modified to Light Yellow / Green mix style */
+        .filters, .form-container { background: #fef9c3; padding: 15px; border-radius: 8px; border: 1px solid #fde047; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; background: #ffffff; }
+        button { background: #16a34a; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #15803d; }
+        
         .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .post-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 15px; position: relative; }
-        .post-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; }
-        .price { color: #2a9d8f; font-size: 18px; font-weight: bold; }
+        .post-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.08); padding: 15px; position: relative; }
+        .post-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; background-color: #ddd; }
+        .price { color: #047857; font-size: 18px; font-weight: bold; }
         .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
         .suggestion-box { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; z-index: 1000; border-radius: 0 0 5px 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
+    <!-- Top Dark Golden Bar -->
+    <div class="top-gold-bar">
+        ⭐ Welcome to Quilon Vehicles Hub - Pathanapuram ⭐
+    </div>
+
+    <!-- Header with Light Blue Background -->
     <header>
         <div>
-            <h2>Quilon Vehicles</h2>
+            <h2 style="margin:0; font-size: 18px;">Quilon Vehicles</h2>
         </div>
         <div class="header-title">
-            <p id="tagline" style="margin:0; font-size: 14px;">Buy & Sell Cars, Bikes, and Autos in Kollam</p>
+            <p id="tagline" style="margin:0; font-size: 13px; font-weight: 600;">Buy & Sell Cars, Bikes, and Autos in Kollam</p>
         </div>
         <!-- 3 Dots Menu Button -->
         <div>
@@ -142,11 +157,10 @@
             menu.classList.toggle('active');
         }
 
-        // Close dropdown when clicking outside
         window.onclick = function(event) {
             if (!event.target.matches('.menu-icon')) {
                 const dropdown = document.getElementById('dropdownMenu');
-                if (dropdown.classList.contains('active')) {
+                if (dropdown && dropdown.classList.contains('active')) {
                     dropdown.classList.remove('active');
                 }
             }
@@ -231,7 +245,6 @@
             }
         }
 
-        // Translations Dictionary
         const translations = {
             en: { tagline: "Buy & Sell Cars, Bikes, and Autos in Kollam", searchFilter: "Search & Filter", recentPosts: "Latest Posts" },
             ml: { tagline: "കൊല്ലത്ത് കാറുകളും ബൈക്കുകളും ഓട്ടോകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ" }
@@ -268,12 +281,12 @@
 
             let postFee = (category === 'Auto') ? 30 : 20;
 
-            const reader = new FileReader();
             if(imageInput.files && imageInput.files[0]) {
-                reader.readAsDataURL(imageInput.files[0]);
+                const reader = new FileReader();
                 reader.onload = function(e) {
                     savePostData(title, category, fuel, price, location, contact, e.target.result, postFee);
-                }
+                };
+                reader.readAsDataURL(imageInput.files[0]);
             } else {
                 savePostData(title, category, fuel, price, location, contact, '', postFee);
             }
@@ -358,7 +371,7 @@
             });
 
             if(filtered.length === 0) {
-                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #777;'>No posts found. Be the first one to post!</p>";
+                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #555;'>No posts found. Be the first one to post!</p>";
                 return;
             }
 
@@ -371,11 +384,11 @@
                 card.className = 'post-card';
                 card.innerHTML = `
                     <button class="fav-btn" onclick="toggleFavorite(${p.id})">${isFav ? '❤️' : '🤍'}</button>
-                    ${p.image ? `<img src="${p.image}" alt="Image">` : ''}
+                    ${p.image ? `<img src="${p.image}" alt="Vehicle Image">` : ''}
                     <h3>${p.title}</h3>
                     <p><b>Category:</b> ${p.category} | <b>Fuel:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
                     <p class="price">₹ ${p.price}</p>
-                    <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}" target="_blank" style="color: #2a9d8f; text-decoration: none; font-weight: bold;">
+                    <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}" target="_blank" style="color: #047857; text-decoration: none; font-weight: bold;">
                         ${p.location} (Map-ൽ കാണുക)
                     </a></p>
                     <div>
