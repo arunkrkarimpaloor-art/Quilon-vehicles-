@@ -6,10 +6,16 @@
     <title>Quilon Vehicles & Parts</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
-        header { background: #1b263b; color: white; padding: 15px; text-align: center; }
+        header { background: #1b263b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .header-title { text-align: center; flex-grow: 1; }
         .banner img { width: 100%; max-height: 200px; object-fit: cover; }
-        .menu { display: flex; justify-content: space-around; background: #415a77; padding: 10px; flex-wrap: wrap; }
-        .menu a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; padding: 5px 10px; }
+        
+        /* 3 Dots Menu Styles */
+        .menu-icon { font-size: 24px; cursor: pointer; padding: 5px 10px; background: #415a77; border-radius: 5px; user-select: none; }
+        .dropdown-menu { display: none; position: absolute; top: 60px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 220px; z-index: 1000; padding: 15px; }
+        .dropdown-menu.active { display: block; }
+        .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 10px; display: block; color: #555; }
+
         .container { padding: 20px; max-width: 1200px; margin: auto; }
         .filters, .form-container { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
@@ -26,23 +32,48 @@
 <body>
 
     <header>
-        <h1>Quilon Vehicles & Parts</h1>
-        <p id="tagline">Buy & Sell Cars, Bikes, and Body Parts in Kollam</p>
+        <div>
+            <h2>Quilon Vehicles</h2>
+        </div>
+        <div class="header-title">
+            <p id="tagline" style="margin:0; font-size: 14px;">Buy & Sell Cars, Bikes, and Autos in Kollam</p>
+        </div>
+        <!-- 3 Dots Menu Button -->
+        <div>
+            <div class="menu-icon" onclick="toggleDropdown(event)">⋮</div>
+            <!-- Dropdown Options Box -->
+            <div id="dropdownMenu" class="dropdown-menu">
+                <label>🌐 Language / ഭാഷ</label>
+                <select id="languageSelect" onchange="changeLanguage()">
+                    <option value="ml">മലയാളം</option>
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+
+                <label>💰 Price Filter</label>
+                <select id="priceFilter" onchange="filterPosts()">
+                    <option value="">All Prices</option>
+                    <option value="20k">Under ₹20,000</option>
+                    <option value="1lakh">Under ₹1 Lakh</option>
+                    <option value="5lakhs">Under ₹5 Lakhs</option>
+                </select>
+
+                <label>⛽ Fuel Type</label>
+                <select id="fuelFilter" onchange="filterPosts()">
+                    <option value="">All Fuel Types</option>
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="ev">Electric (EV)</option>
+                    <option value="cng">CNG</option>
+                </select>
+            </div>
+        </div>
     </header>
 
     <!-- Banner Image -->
     <div class="banner">
         <img src="1000232744.png" alt="Banner" onerror="this.style.display='none'">
-    </div>
-
-    <!-- Multi-Language Menu -->
-    <div class="menu">
-        <a onclick="setLanguage('ml')">മലയാളം</a>
-        <a onclick="setLanguage('en')">English</a>
-        <a onclick="setLanguage('hi')">हिन्दी</a>
-        <a onclick="setLanguage('ta')">தமிழ்</a>
-        <a onclick="setLanguage('kn')">ಕನ್ನಡ</a>
-        <a onclick="setLanguage('bn')">বাংলা</a>
     </div>
 
     <div class="container">
@@ -57,21 +88,6 @@
                 <option value="Car">Cars</option>
                 <option value="Auto">Autos</option>
                 <option value="Part">Body Parts</option>
-            </select>
-
-            <select id="fuelFilter" onchange="filterPosts()">
-                <option value="">All Fuel Types (Petrol/Diesel/EV)</option>
-                <option value="petrol">Petrol</option>
-                <option value="diesel">Diesel</option>
-                <option value="ev">Electric (EV)</option>
-                <option value="cng">CNG</option>
-            </select>
-
-            <select id="priceFilter" onchange="filterPosts()">
-                <option value="">All Prices</option>
-                <option value="20k">Under ₹20,000</option>
-                <option value="1lakh">Under ₹1 Lakh</option>
-                <option value="5lakhs">Under ₹5 Lakhs</option>
             </select>
 
             <!-- Location Filter with Auto-suggestions -->
@@ -119,6 +135,23 @@
     </div>
 
     <script>
+        // 3 Dots Menu Toggle
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-icon')) {
+                const dropdown = document.getElementById('dropdownMenu');
+                if (dropdown.classList.contains('active')) {
+                    dropdown.classList.remove('active');
+                }
+            }
+        }
+
         // Kollam Locations List (Alphabetical order)
         const kollamLocations = [
             "Anchal", "Chadayamangalam", "Kadavoor", "Kallumkadavu", "Kollam", 
@@ -200,11 +233,12 @@
 
         // Translations Dictionary
         const translations = {
-            en: { tagline: "Buy & Sell Cars, Bikes, and Body Parts in Kollam", searchFilter: "Search & Filter", recentPosts: "Latest Posts" },
-            ml: { tagline: "കൊല്ലത്ത് കാറുകളും ബൈക്കുകളും സ്പെയർ പാർട്സുകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ" }
+            en: { tagline: "Buy & Sell Cars, Bikes, and Autos in Kollam", searchFilter: "Search & Filter", recentPosts: "Latest Posts" },
+            ml: { tagline: "കൊല്ലത്ത് കാറുകളും ബൈക്കുകളും ഓട്ടോകളും വാങ്ങാനും വിൽക്കാനും", searchFilter: "സെർച്ചും ഫിൽട്ടറും", recentPosts: "ഏറ്റവും പുതിയ പോസ്റ്റുകൾ" }
         };
 
-        function setLanguage(lang) {
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
             localStorage.setItem('quilon_lang', lang);
             document.getElementById('tagline').innerText = translations[lang] ? translations[lang].tagline : translations['en'].tagline;
             document.getElementById('txtSearchFilter').innerText = translations[lang] ? translations[lang].searchFilter : translations['en'].searchFilter;
@@ -213,7 +247,8 @@
 
         window.onload = function() {
             const savedLang = localStorage.getItem('quilon_lang') || 'ml';
-            setLanguage(savedLang);
+            document.getElementById('languageSelect').value = savedLang;
+            changeLanguage();
             loadPosts();
         };
 
@@ -249,7 +284,7 @@
             const newPost = {
                 id: Date.now(),
                 title, category, fuel, price, location, contact, image,
-                date: new Date().getTime() // 30 ദിവസ കാലാവധിക്ക് കണക്കാക്കാൻ
+                date: new Date().getTime()
             };
             posts.unshift(newPost);
             localStorage.setItem('quilon_posts', JSON.stringify(posts));
@@ -290,10 +325,9 @@
         function filterPosts() {
             let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
             
-            // 30 ദിവസത്തിൽ കൂടുതൽ പഴക്കമുള്ള പോസ്റ്റുകൾ ഓട്ടോമാറ്റിക്കായി നീക്കം ചെയ്യുന്നു
+            // 30 days expiration check
             const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
             const currentTime = new Date().getTime();
-            
             posts = posts.filter(p => (currentTime - (p.date || 0)) < thirtyDaysInMillis);
             localStorage.setItem('quilon_posts', JSON.stringify(posts));
 
