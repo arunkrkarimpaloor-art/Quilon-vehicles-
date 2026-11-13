@@ -29,7 +29,95 @@
         header p {
             font-size: 14px;
             color: #94a3b8;
+            margin-bottom: 15px;
         }
+        .sell-toggle-btn {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .sell-toggle-btn:hover {
+            background-color: #059669;
+        }
+
+        /* Sell Form Modal / Section */
+        #sellSection {
+            display: none;
+            max-width: 500px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        #sellSection h2 {
+            margin-bottom: 15px;
+            color: #0f172a;
+            font-size: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .photo-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .photo-btn {
+            flex: 1;
+            padding: 10px;
+            background: #e2e8f0;
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        #imagePreview {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        .pay-sell-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Vehicle Grid */
         .container {
             max-width: 1200px;
             margin: 30px auto;
@@ -105,9 +193,46 @@
     <header>
         <h1>Quilon Vehicles</h1>
         <p>Pathanapuram, Kollam | Trusted Second Hand Cars & Bikes</p>
+        <button class="sell-toggle-btn" onclick="toggleSellForm()">+ വാഹനം വിൽക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക (₹10)</button>
     </header>
 
-    <div class="container">
+    <!-- Sell Vehicle Form -->
+    <div id="sellSection">
+        <h2>നിങ്ങളുടെ വാഹനം വിൽക്കുക</h2>
+        <div class="form-group">
+            <label>വാഹനത്തിന്റെ പേര് & മോഡൽ</label>
+            <input type="text" id="vTitle" placeholder="ഉദാ: Maruti Swift 2019" required>
+        </div>
+        <div class="form-group">
+            <label>വിവരങ്ങൾ (വർഷം, ഇന്ധനം, കിലോമീറ്റർ)</label>
+            <input type="text" id="vDetails" placeholder="ഉദാ: 2019 | Petrol | 40,000 km" required>
+        </div>
+        <div class="form-group">
+            <label>ഉദ്ദേശിക്കുന്ന വില (₹)</label>
+            <input type="text" id="vPrice" placeholder="ഉദാ: 4,20,000" required>
+        </div>
+        <div class="form-group">
+            <label>RC ഓണറുടെ ഫോൺ നമ്പർ</label>
+            <input type="tel" id="vPhone" placeholder="10 അക്ക മൊബൈൽ നമ്പർ" required>
+        </div>
+        <div class="form-group">
+            <label>വാഹനത്തിന്റെ ഫോട്ടോ തിരഞ്ഞെടുക്കുക</label>
+            <div class="photo-buttons">
+                <label class="photo-btn">
+                    📷 ക്യാമറ തുറക്കുക
+                    <input type="file" accept="image/*" capture="environment" style="display:none" onchange="previewImage(event)">
+                </label>
+                <label class="photo-btn">
+                    🖼️ ഗാലറിയിൽ നിന്നും
+                    <input type="file" accept="image/*" style="display:none" onchange="previewImage(event)">
+                </label>
+            </div>
+            <img id="imagePreview" alt="Preview">
+        </div>
+        <button class="pay-sell-btn" onclick="submitVehicle()">₹10 അടച്ച് വാഹനം പോസ്റ്റ് ചെയ്യുക</button>
+    </div>
+
+    <div class="container" id="vehicleContainer">
         <!-- Vehicle 1 -->
         <div class="vehicle-card">
             <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=500&q=60" alt="Car" class="vehicle-img">
@@ -115,8 +240,8 @@
                 <div class="vehicle-title">Maruti Suzuki Swift</div>
                 <div class="vehicle-details">Model: 2018 | Diesel | 55,000 km</div>
                 <div class="vehicle-price">₹ 4,50,000</div>
-                <a href="https://razorpay.me/@arunkr" target="_blank" class="unlock-btn">
-                    Unlock Contact - ₹30
+                <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
+                    Unlock RC Owner Contact - ₹30
                 </a>
             </div>
         </div>
@@ -128,8 +253,8 @@
                 <div class="vehicle-title">Hyundai Grand i10</div>
                 <div class="vehicle-details">Model: 2017 | Petrol | 48,000 km</div>
                 <div class="vehicle-price">₹ 3,80,000</div>
-                <a href="https://razorpay.me/@arunkr" target="_blank" class="unlock-btn">
-                    Unlock Contact - ₹30
+                <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
+                    Unlock RC Owner Contact - ₹30
                 </a>
             </div>
         </div>
@@ -141,8 +266,8 @@
                 <div class="vehicle-title">Royal Enfield Classic 350</div>
                 <div class="vehicle-details">Model: 2020 | Petrol | 22,000 km</div>
                 <div class="vehicle-price">₹ 1,45,000</div>
-                <a href="https://razorpay.me/@arunkr" target="_blank" class="unlock-btn">
-                    Unlock Contact - ₹30
+                <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
+                    Unlock RC Owner Contact - ₹30
                 </a>
             </div>
         </div>
@@ -152,6 +277,71 @@
         <p>&copy; 2026 Quilon Vehicles. All Rights Reserved.</p>
     </footer>
 
+    <script>
+        let uploadedImageSrc = "";
+
+        function toggleSellForm() {
+            const form = document.getElementById('sellSection');
+            form.style.display = (form.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImageSrc = e.target.result;
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = uploadedImageSrc;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitVehicle() {
+            const title = document.getElementById('vTitle').value;
+            const details = document.getElementById('vDetails').value;
+            const price = document.getElementById('vPrice5').value || document.getElementById('vPrice').value;
+            const phone = document.getElementById('vPhone').value;
+
+            if (!title || !details || !price || !phone || !uploadedImageSrc) {
+                alert("ദയവായി എല്ലാ വിവരങ്ങളും വാഹനത്തിന്റെ ഫോട്ടോയും നൽകുക!");
+                return;
+            }
+
+            // Open Razorpay ₹10 link for listing fee
+            window.open("https://razorpay.me/@arunkr/10", "_blank");
+
+            // Add vehicle card to the page
+            const container = document.getElementById('vehicleContainer');
+            const newCard = `
+                <div class="vehicle-card">
+                    <img src="${uploadedImageSrc}" alt="${title}" class="vehicle-img">
+                    <div class="vehicle-info">
+                        <div class="vehicle-title">${title}</div>
+                        <div class="vehicle-details">${details}</div>
+                        <div class="vehicle-price">₹ ${price}</div>
+                        <a href="https://razorpay.me/@arunkr/30" target="_blank" class="unlock-btn">
+                            Unlock RC Owner Contact - ₹30
+                        </a>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('afterbegin', newCard);
+
+            // Reset & close form
+            document.getElementById('vTitle').value = "";
+            document.getElementById('vDetails').value = "";
+            document.getElementById('vPrice').value = "";
+            document.getElementById('vPhone').value = "";
+            document.getElementById('imagePreview').style.display = 'none';
+            uploadedImageSrc = "";
+            toggleSellForm();
+
+            alert("₹10 പേയ്‌മെന്റ് പൂർത്തിയാക്കുക! നിങ്ങളുടെ വാഹനം ലിസ്റ്റിൽ ചേർത്തിട്ടുണ്ട്.");
+        }
+    </script>
+
 </body>
 </html>
-
