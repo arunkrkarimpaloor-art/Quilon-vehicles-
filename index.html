@@ -311,6 +311,7 @@
             const savedLang = localStorage.getItem('quilon_lang') || 'en';
             document.getElementById('languageSelect').value = savedLang;
             applyTranslations(savedLang);
+            filterPosts(); // Ensure posts load immediately on startup
         };
 
         function submitPost() {
@@ -403,6 +404,7 @@
             const t = translations[lang] || translations.en;
 
             const container = document.getElementById('postsContainer');
+            if(!container) return;
             container.innerHTML = '';
 
             let filtered = posts.filter(p => {
