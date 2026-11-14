@@ -9,22 +9,23 @@
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #fef08a; color: #333; }
         
         /* Top Banner & Header Container with Image and 3-Dots Menu */
-        .banner-header-container { position: relative; width: 100%; max-height: 220px; overflow: hidden; background: #000; }
+        .banner-header-container { position: relative; width: 100%; height: 220px; background: #000; }
         .banner-header-container img { width: 100%; height: 220px; object-fit: cover; display: block; opacity: 0.9; }
         
         /* Top Right 3 Dots Menu Button over Image */
-        .top-menu-bar { position: absolute; top: 15px; right: 20px; z-index: 100; }
-        .menu-icon { font-size: 24px; cursor: pointer; padding: 6px 14px; background: rgba(0, 0, 0, 0.6); color: white; border-radius: 5px; user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .top-menu-bar { position: absolute; top: 15px; right: 20px; z-index: 3000; }
+        .menu-icon { font-size: 24px; cursor: pointer; padding: 6px 14px; background: rgba(0, 0, 0, 0.7); color: white; border-radius: 5px; user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         
-        .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); width: 280px; z-index: 3000; padding: 15px; max-height: 80vh; overflow-y: auto; }
+        /* Fixed Dropdown Menu so it floats cleanly above all sections */
+        .dropdown-menu { display: none; position: fixed; top: 65px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.35); width: 280px; z-index: 9999; padding: 15px; max-height: 82vh; overflow-y: auto; border: 1px solid #cbd5e1; }
         .dropdown-menu.active { display: block; }
         .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 12px; display: block; color: #555; line-height: 1.4; }
 
         /* Modal/Popup for Posting Ad */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 4000; justify-content: center; align-items: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center; }
         .modal.active { display: flex; }
         .modal-content { background: #dcfce7; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; border: 1px solid #bbf7d0; position: relative; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; font-weight: bold; color: #333; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 22px; cursor: pointer; font-weight: bold; color: #333; }
 
         /* Container with extra bottom padding */
         .container { padding: 20px 20px 80px 20px; max-width: 1200px; margin: auto; }
