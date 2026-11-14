@@ -16,13 +16,11 @@
         .top-menu-bar { position: absolute; top: 15px; right: 20px; z-index: 3000; }
         .menu-icon { font-size: 24px; cursor: pointer; padding: 6px 14px; background: rgba(0, 0, 0, 0.7); color: white; border-radius: 5px; user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         
-        /* Fixed Dropdown Menu with solid opaque background to block background lines completely */
-        .dropdown-menu { display: none; position: fixed; top: 65px; right: 20px; background: #ffffff; color: #333; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); width: 280px; z-index: 99999; padding: 15px; max-height: 82vh; overflow-y: auto; border: 1px solid #cbd5e1; }
+        /* Fixed Dropdown Menu with solid background to completely block any underlying lines */
+        .dropdown-menu { display: none; position: fixed; top: 65px; right: 20px; background-color: #ffffff !important; color: #333; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); width: 280px; z-index: 99999; padding: 15px; max-height: 82vh; overflow-y: auto; border: 2px solid #94a3b8; }
         .dropdown-menu.active { display: block; }
-        
-        /* Dropdown internal items with absolute solid backgrounds to prevent background bleeding */
-        .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 12px; display: block; color: #555; line-height: 1.4; border: none; background: #ffffff; padding: 0; position: relative; z-index: 100000; }
-        .dropdown-menu select, .dropdown-menu input { position: relative; z-index: 100000; background: #ffffff !important; opacity: 1 !important; }
+        .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 12px; display: block; color: #555; line-height: 1.4; background-color: #ffffff !important; border: none; padding: 0; position: relative; z-index: 100000; }
+        .dropdown-menu select, .dropdown-menu input { position: relative; z-index: 100000; background-color: #ffffff !important; border: 1px solid #cbd5e1; }
 
         /* Modal/Popup for Posting Ad */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200000; justify-content: center; align-items: center; }
@@ -72,8 +70,8 @@
                 </select>
 
                 <label id="lblLocFilterTitle">Filter by Location (All India)</label>
-                <div style="position: relative; margin-top: 5px; background: #fff;">
-                    <input type="text" id="locationFilter" placeholder="Enter any city or state..." onkeyup="filterPosts()" autocomplete="off" style="margin: 0; background: #fff;">
+                <div style="position: relative; margin-top: 5px;">
+                    <input type="text" id="locationFilter" placeholder="Enter any city or state..." onkeyup="filterPosts()" autocomplete="off" style="margin: 0;">
                 </div>
 
                 <label id="lblCatFilterTitle">Category Filter</label>
@@ -351,4 +349,109 @@
         }
 
         function savePostData(title, category, fuel, price, location, contact, image, postFee) {
-            let posts = JSON.parse(localStorage.getItem('quilon
+            let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+            const newPost = {
+                id: Date.now(),
+                title, category, fuel, price, location, contact, image,
+                date: new Date().getTime()
+            };
+            posts.unshift(newPost);
+            localStorage.setItem('quilon_posts', JSON.stringify(posts));
+            alert(`Payment simulated: ₹${postFee} deducted. Ad Posted Successfully!`);
+            location.reload();
+        }
+
+        function toggleFavorite(postId) {
+            let favorites = JSON.parse(localStorage.getItem('quilon_favorites')) || [];
+            const index = favorites.indexOf(postId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(postId);
+            }
+            localStorage.setItem('quilon_favorites', JSON.stringify(favorites));
+            filterPosts();
+        }
+
+        function unlockContact(postId, category) {
+            let unlocked = JSON.parse(localStorage.getItem('quilon_unlocked')) || [];
+            let unlockFee = (category === 'Car' || category === 'Auto') ? 30 : 20;
+
+            if(!unlocked.includes(postId)) {
+                if(confirm(`Unlock contact details for ₹${unlockFee}?`)) {
+                    unlocked.push(postId);
+                    localStorage.setItem('quilon_unlocked', JSON.stringify(unlocked));
+                    alert(`Payment simulated: ₹${unlockFee} deducted.`);
+                    filterPosts();
+                }
+            }
+        }
+
+        function filterPosts() {
+            let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+            
+            // 30 days expiration check (Auto delete after 30 days)
+            const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+            const currentTime = new Date().getTime();
+            posts = posts.filter(p => (currentTime - (p.date || 0)) < thirtyDaysInMillis);
+            localStorage.setItem('quilon_posts', JSON.stringify(posts));
+
+            let favorites = JSON.parse(localStorage.getItem('quilon_favorites')) || [];
+            let unlocked = JSON.parse(localStorage.getItem('quilon_unlocked')) || [];
+
+            const searchTxt = document.getElementById('searchInput').value.toLowerCase();
+            const catFilter = document.getElementById('categoryFilter').value;
+            const fuelFilter = document.getElementById('fuelFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+            const locFilter = document.getElementById('locationFilter').value.toLowerCase();
+            const lang = document.getElementById('languageSelect').value;
+            const t = translations[lang] || translations.en;
+
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = '';
+
+            let filtered = posts.filter(p => {
+                let matchesSearch = p.title.toLowerCase().includes(searchTxt) || p.category.toLowerCase().includes(searchTxt);
+                let matchesCat = catFilter === "" || p.category === catFilter;
+                let matchesFuel = fuelFilter === "" || p.fuel === fuelFilter;
+                let matchesLoc = locFilter === "" || p.location.toLowerCase().includes(locFilter);
+                
+                let matchesPrice = true;
+                if(priceFilter === '20k') matchesPrice = p.price <= 20000;
+                else if(priceFilter === '1lakh') matchesPrice = p.price <= 100000;
+                else if(priceFilter === '5lakhs') matchesPrice = p.price <= 500000;
+
+                return matchesSearch && matchesCat && matchesFuel && matchesPrice && matchesLoc;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<p style='grid-column: 1/-1; text-align: center; color: #333; font-weight: bold;'>${t.noPosts}</p>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isFav = favorites.includes(p.id);
+                const isUnlocked = unlocked.includes(p.id);
+                const unlockFee = (p.category === 'Car' || p.category === 'Auto') ? 30 : 20;
+
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <button class="fav-btn" onclick="toggleFavorite(${p.id})">${isFav ? '❤️' : '🤍'}</button>
+                    ${p.image ? `<img src="${p.image}" alt="Vehicle Image">` : ''}
+                    <h3>${p.title}</h3>
+                    <p><b>${t.categoryLabel}:</b> ${p.category} | <b>${t.fuelLabel}:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
+                    <p class="price">₹ ${p.price}</p>
+                    <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}" target="_blank" style="color: #047857; text-decoration: none; font-weight: bold;">
+                        ${p.location} (${t.mapText})
+                    </a></p>
+                    <div>
+                        ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id}, '${p.category}')">${t.unlockBtn} (₹${unlockFee})</button>`}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
