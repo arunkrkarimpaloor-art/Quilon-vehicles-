@@ -342,38 +342,25 @@
 
         function savePostData(title, category, fuel, price, locationVal, contact, image, postFee) {
             let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
-            // Generate a unique secret delete ID for the seller
-            const uniqueSecretId = 'QLN-' + Math.floor(100000 + Math.random() * 900000);
             
             const newPost = {
                 id: Date.now(),
-                secretId: uniqueSecretId,
                 title, category, fuel, price, location: locationVal, contact, image,
                 date: new Date().getTime()
             };
             posts.unshift(newPost);
             localStorage.setItem('quilon_posts', JSON.stringify(posts));
             
-            alert(`Ad Posted Successfully!\n\nYour Secret Delete ID is: ${uniqueSecretId}\n(Save this ID to delete your post anytime!)`);
+            alert(`Ad Posted Successfully!`);
             window.location.reload();
         }
 
         function deletePost(postId) {
-            let inputId = prompt("Enter your Secret Delete ID to delete this post:");
-            if (!inputId) return;
-
-            let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
-            let postIndex = posts.findIndex(p => p.id === postId);
-
-            if (postIndex !== -1) {
-                if (posts[postIndex].secretId === inputId.trim()) {
-                    posts.splice(postIndex, 1);
-                    localStorage.setItem('quilon_posts', JSON.stringify(posts));
-                    alert("Post deleted successfully!");
-                    filterPosts();
-                } else {
-                    alert("Incorrect Secret Delete ID!");
-                }
+            if (confirm("Are you sure you want to delete this post?")) {
+                let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
+                posts = posts.filter(p => p.id !== postId);
+                localStorage.setItem('quilon_posts', JSON.stringify(posts));
+                filterPosts();
             }
         }
 
