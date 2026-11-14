@@ -13,7 +13,6 @@
         .top-menu-bar { position: absolute; top: 15px; right: 20px; z-index: 3000; }
         .menu-icon { font-size: 24px; cursor: pointer; padding: 6px 14px; background: rgba(0, 0, 0, 0.7); color: white; border-radius: 5px; user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         
-        /* Dropdown menu strictly layered with solid white background */
         .dropdown-menu { display: none; position: fixed; top: 65px; right: 20px; background: #ffffff !important; color: #333; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: 280px; z-index: 999999; padding: 15px; max-height: 82vh; overflow-y: auto; border: 2px solid #333; }
         .dropdown-menu.active { display: block; }
         .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 12px; display: block; color: #555; background: #ffffff !important; border: none; padding: 0; }
@@ -23,6 +22,9 @@
         .modal.active { display: flex; }
         .modal-content { background: #dcfce7; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; border: 1px solid #bbf7d0; position: relative; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 22px; cursor: pointer; font-weight: bold; color: #333; }
+
+        /* Notification Box inside Post Modal before payment */
+        .notice-box { background: #fef3c7; border: 1px solid #f59e0b; color: #b45309; padding: 10px; border-radius: 5px; font-size: 13px; font-weight: bold; margin: 10px 0; text-align: center; }
 
         .container { padding: 20px 20px 80px 20px; max-width: 1200px; margin: auto; }
         .search-container { background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
@@ -104,10 +106,17 @@
         </div>
     </div>
 
+    <!-- Post Ad Modal (Popup) -->
     <div id="postModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closePostModal()">&times;</span>
             <h3 id="txtPostAd" style="margin-top:0;">Post Your Ad</h3>
+            
+            <!-- 30 Days Notice before payment/publishing -->
+            <div id="notice30Days" class="notice-box">
+                ⚠️ Note: From today onwards, this vehicle ad will remain active on this site for 30 days only.
+            </div>
+
             <input type="text" id="postTitle" placeholder="Vehicle / Part Name">
             
             <select id="postCategory" onchange="updateFeesText()">
@@ -150,6 +159,7 @@
                 searchPlaceholder: "Search vehicles or parts...",
                 recentPosts: "Latest Posts",
                 postAdTitle: "Post Your Ad",
+                noticeText: "⚠️ Note: From today onwards, this vehicle ad will remain active on this site for 30 days only.",
                 noPosts: "No posts found. Be the first one to post!",
                 categoryLabel: "Category",
                 fuelLabel: "Fuel",
@@ -167,6 +177,7 @@
                 searchPlaceholder: "വാഹനങ്ങൾ അല്ലെങ്കിൽ പാർട്സുകൾ തിരയുക...",
                 recentPosts: "ഏറ്റവും പുതിയ പരസ്യങ്ങൾ",
                 postAdTitle: "നിങ്ങളുടെ പരസ്യം പോസ്റ്റ് ചെയ്യുക",
+                noticeText: "⚠️ ശ്രദ്ധിക്കുക: ഇന്നു മുതൽ 30 ദിവസത്തേക്ക് മാത്രമായിരിക്കും ഈ വാഹനം ഈ സൈറ്റിൽ ഉണ്ടായിരിക്കുക.",
                 noPosts: "പരസ്യങ്ങളൊന്നും കണ്ടെത്തിയില്ല. ആദ്യമായി പോസ്റ്റ് ചെയ്യൂ!",
                 categoryLabel: "കാറ്റഗറി",
                 fuelLabel: "ഇന്ധനം",
@@ -184,6 +195,7 @@
                 searchPlaceholder: "वाहन या पार्ट्स खोजें...",
                 recentPosts: "नवीनतम विज्ञापन",
                 postAdTitle: "अपना विज्ञापन पोस्ट करें",
+                noticeText: "⚠️ ध्यान दें: आज से यह वाहन विज्ञापन केवल 30 दिनों के लिए इस साइट पर रहेगा।",
                 noPosts: "कोई विज्ञापन नहीं मिला। पहले पोस्ट करें!",
                 categoryLabel: "श्रेणी",
                 fuelLabel: "ईंधन",
@@ -210,6 +222,7 @@
             document.getElementById('searchInput').placeholder = t.searchPlaceholder;
             document.getElementById('txtRecentPosts').innerText = t.recentPosts;
             document.getElementById('txtPostAd').innerText = t.postAdTitle;
+            document.getElementById('notice30Days').innerText = t.noticeText;
             filterPosts();
         }
 
