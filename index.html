@@ -31,7 +31,7 @@
         /* Container with extra bottom padding */
         .container { padding: 20px 20px 80px 20px; max-width: 1200px; margin: auto; }
         
-        /* Search Bar Container background */
+        /* Search Bar Container background directly below header */
         .search-container { background: #dcfce7; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
         
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; background: #ffffff; }
@@ -61,14 +61,19 @@
             <h2 style="margin:0; font-size: 18px;">Quilon Vehicles</h2>
         </div>
         <div class="header-title">
-            <p id="tagline" style="margin:0; font-size: 13px; font-weight: 600;">Buy & Sell Cars, Bikes, and Autos in Kollam</p>
+            <p id="tagline" style="margin:0; font-size: 13px; font-weight: 600;">Buy & Sell Cars, Bikes, Autos & Parts across India</p>
         </div>
-        <!-- 3 Dots Menu Button -->
+        <!-- 3 Dots Menu Button containing Filters & Location -->
         <div>
             <div class="menu-icon" onclick="toggleDropdown(event)">⋮</div>
-            <!-- Dropdown Options Box (Contains Filters & Post Option) -->
+            <!-- Dropdown Options Box -->
             <div id="dropdownMenu" class="dropdown-menu">
                 <div class="menu-btn-action" onclick="openPostModal()">+ Post Your Ad</div>
+
+                <label>Filter by Location (All India)</label>
+                <div style="position: relative;">
+                    <input type="text" id="locationFilter" placeholder="Enter any city or state..." onkeyup="filterPosts()" autocomplete="off">
+                </div>
 
                 <label>Category Filter</label>
                 <select id="categoryFilter" onchange="filterPosts()">
@@ -99,9 +104,20 @@
         </div>
     </header>
 
+    <!-- Main Search Bar Directly Below Header -->
+    <div class="container" style="padding-bottom: 0px; padding-top: 15px;">
+        <div class="search-container">
+            <h3 id="txtSearchFilter" style="margin-top: 0; margin-bottom: 8px;">Search Vehicles & Body Parts</h3>
+            <div style="position: relative; width: 100%;">
+                <input type="text" id="searchInput" placeholder="Search vehicles or parts (e.g. Bullet, Engine, Tyres, Swift)..." onkeyup="handleSearchInput()" autocomplete="off" style="margin: 0;">
+                <div id="searchSuggestions" class="suggestion-box"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Banner Image -->
     <div class="banner">
-        <img src="1000232744.png" alt="Banner" onerror="this.style.display='none'">
+        <img src="file_00000000f648820895b49c4bf4868e39.png" alt="Banner" onerror="this.style.display='none'">
     </div>
 
     <!-- Post Ad Modal (Popup) -->
@@ -109,7 +125,7 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closePostModal()">&times;</span>
             <h3 id="txtPostAd" style="margin-top:0;">Post Your Ad</h3>
-            <input type="text" id="postTitle" placeholder="Vehicle / Part Name (e.g. Royal Enfield)">
+            <input type="text" id="postTitle" placeholder="Vehicle / Part Name (e.g. Royal Enfield or Headlight)">
             
             <select id="postCategory" onchange="updateFeesText()">
                 <option value="Bike">Bike (Posting Fee: ₹20 / Unlock: ₹20)</option>
@@ -127,11 +143,8 @@
 
             <input type="number" id="postPrice" placeholder="Price in ₹">
             
-            <!-- Post Location with Auto-suggestions -->
-            <div style="position: relative; display: inline-block; width: 100%;">
-                <input type="text" id="postLocation" placeholder="Location (e.g. Pathanapuram)" onkeyup="showPostLocationSuggestions()" autocomplete="off">
-                <div id="postLocationSuggestions" class="suggestion-box"></div>
-            </div>
+            <!-- All India Location Input for Posting -->
+            <input type="text" id="postLocation" placeholder="Location (Enter any city, e.g. Kochi, Delhi, Kollam)">
 
             <input type="file" id="postImage" accept="image/*">
             <textarea id="postContact" placeholder="Contact Details"></textarea>
@@ -140,23 +153,6 @@
     </div>
 
     <div class="container">
-        <!-- Main Search & Location Filter -->
-        <div class="search-container">
-            <h3 id="txtSearchFilter">Search & Location</h3>
-            
-            <!-- Search Input with Auto-suggestions for Spelling Matching -->
-            <div style="position: relative; display: inline-block; width: 100%; margin-bottom: 8px;">
-                <input type="text" id="searchInput" placeholder="Search vehicles or parts (e.g. Bullet, Splendor)..." onkeyup="handleSearchInput()" autocomplete="off">
-                <div id="searchSuggestions" class="suggestion-box"></div>
-            </div>
-            
-            <!-- Location Filter with Auto-suggestions -->
-            <div style="position: relative; display: inline-block; width: 100%;">
-                <input type="text" id="locationFilter" placeholder="Filter by Location (e.g. Pathanapuram, Kollam)" onkeyup="showLocationSuggestions()" autocomplete="off">
-                <div id="locationSuggestions" class="suggestion-box"></div>
-            </div>
-        </div>
-
         <!-- Posts Display Area -->
         <h2 id="txtRecentPosts">Latest Posts</h2>
         <div class="post-grid" id="postsContainer"></div>
@@ -188,64 +184,7 @@
             document.getElementById('postModal').classList.remove('active');
         }
 
-        // Kollam Locations List
-        const kollamLocations = [
-            "Anchal", "Chadayamangalam", "Kadavoor", "Kallumkadavu", "Kollam", 
-            "Kottarakkara", "Kundara", "Nedumparambu", "Pathanapuram", "Punalur", "Sasthamcotta"
-        ].sort();
-
-        function showLocationSuggestions() {
-            const inputField = document.getElementById('locationFilter');
-            const inputVal = inputField.value.toLowerCase();
-            const suggestionBox = document.getElementById('locationSuggestions');
-            suggestionBox.innerHTML = '';
-
-            if (inputVal.length === 0) {
-                filterPosts();
-                return;
-            }
-
-            const matches = kollamLocations.filter(item => item.toLowerCase().includes(inputVal));
-            matches.forEach(place => {
-                const div = document.createElement('div');
-                div.style.padding = '10px';
-                div.style.cursor = 'pointer';
-                div.style.borderBottom = '1px solid #eee';
-                div.innerText = place;
-                div.onclick = function() {
-                    inputField.value = place;
-                    suggestionBox.innerHTML = '';
-                    filterPosts();
-                };
-                suggestionBox.appendChild(div);
-            });
-            filterPosts();
-        }
-
-        function showPostLocationSuggestions() {
-            const inputField = document.getElementById('postLocation');
-            const inputVal = inputField.value.toLowerCase();
-            const suggestionBox = document.getElementById('postLocationSuggestions');
-            suggestionBox.innerHTML = '';
-
-            if (inputVal.length === 0) return;
-
-            const matches = kollamLocations.filter(item => item.toLowerCase().includes(inputVal));
-            matches.forEach(place => {
-                const div = document.createElement('div');
-                div.style.padding = '10px';
-                div.style.cursor = 'pointer';
-                div.style.borderBottom = '1px solid #eee';
-                div.innerText = place;
-                div.onclick = function() {
-                    inputField.value = place;
-                    suggestionBox.innerHTML = '';
-                };
-                suggestionBox.appendChild(div);
-            });
-        }
-
-        // Search typing suggestions based on spelling matching
+        // Search typing suggestions based on spelling matching for vehicles & parts
         function handleSearchInput() {
             const inputField = document.getElementById('searchInput');
             const val = inputField.value.toLowerCase();
@@ -381,7 +320,7 @@
             container.innerHTML = '';
 
             let filtered = posts.filter(p => {
-                let matchesSearch = p.title.toLowerCase().includes(searchTxt);
+                let matchesSearch = p.title.toLowerCase().includes(searchTxt) || p.category.toLowerCase().includes(searchTxt);
                 let matchesCat = catFilter === "" || p.category === catFilter;
                 let matchesFuel = fuelFilter === "" || p.fuel === fuelFilter;
                 let matchesLoc = locFilter === "" || p.location.toLowerCase().includes(locFilter);
