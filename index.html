@@ -8,22 +8,20 @@
         /* Overall Page Background Color */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #fef08a; color: #333; }
         
-        /* Top Most Dark Golden Bar */
-        .top-gold-bar { background-color: #b8860b; color: white; text-align: center; padding: 6px; font-size: 13px; font-weight: bold; }
-
-        /* Main Header with Light Blue */
-        header { background: #38bdf8; color: #0f172a; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .header-title { text-align: center; flex-grow: 1; }
-        .banner img { width: 100%; max-height: 200px; object-fit: cover; }
+        /* Top Banner & Header Container with Image and 3-Dots Menu */
+        .banner-header-container { position: relative; width: 100%; max-height: 220px; overflow: hidden; background: #000; }
+        .banner-header-container img { width: 100%; height: 220px; object-fit: cover; display: block; opacity: 0.9; }
         
-        /* 3 Dots Menu Styles */
-        .menu-icon { font-size: 24px; cursor: pointer; padding: 5px 12px; background: #0284c7; color: white; border-radius: 5px; user-select: none; }
-        .dropdown-menu { display: none; position: absolute; top: 70px; right: 20px; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 280px; z-index: 1000; padding: 15px; max-height: 80vh; overflow-y: auto; }
+        /* Top Right 3 Dots Menu Button over Image */
+        .top-menu-bar { position: absolute; top: 15px; right: 20px; z-index: 100; }
+        .menu-icon { font-size: 24px; cursor: pointer; padding: 6px 14px; background: rgba(0, 0, 0, 0.6); color: white; border-radius: 5px; user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        
+        .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; background: white; color: #333; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); width: 280px; z-index: 3000; padding: 15px; max-height: 80vh; overflow-y: auto; }
         .dropdown-menu.active { display: block; }
-        .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 10px; display: block; color: #555; }
+        .dropdown-menu label { font-size: 13px; font-weight: bold; margin-top: 12px; display: block; color: #555; line-height: 1.4; }
 
         /* Modal/Popup for Posting Ad */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 4000; justify-content: center; align-items: center; }
         .modal.active { display: flex; }
         .modal-content { background: #dcfce7; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; border: 1px solid #bbf7d0; position: relative; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; font-weight: bold; color: #333; }
@@ -31,7 +29,7 @@
         /* Container with extra bottom padding */
         .container { padding: 20px 20px 80px 20px; max-width: 1200px; margin: auto; }
         
-        /* Search Bar Container background directly below header */
+        /* Search Bar Container background */
         .search-container { background: #dcfce7; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
         
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; background: #ffffff; }
@@ -43,40 +41,37 @@
         .post-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; background-color: #ddd; }
         .price { color: #047857; font-size: 18px; font-weight: bold; }
         .fav-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
-        .suggestion-box { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; z-index: 1000; border-radius: 0 0 5px 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .suggestion-box { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; max-height: 150px; overflow-y: auto; z-index: 5000; border-radius: 0 0 5px 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .menu-btn-action { background: #2563eb; color: white; margin-bottom: 10px; text-align: center; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .menu-btn-action:hover { background: #1d4ed8; }
     </style>
 </head>
 <body>
 
-    <!-- Top Dark Golden Bar -->
-    <div class="top-gold-bar">
-        Welcome to Quilon Vehicles Hub - Pathanapuram
-    </div>
-
-    <!-- Header with Light Blue Background -->
-    <header>
-        <div>
-            <h2 style="margin:0; font-size: 18px;">Quilon Vehicles</h2>
-        </div>
-        <div class="header-title">
-            <p id="tagline" style="margin:0; font-size: 13px; font-weight: 600;">Buy & Sell Cars, Bikes, Autos & Parts across India</p>
-        </div>
-        <!-- 3 Dots Menu Button containing Filters & Location -->
-        <div>
+    <!-- Banner Image Header with 3 Dots Menu on the Right Side -->
+    <div class="banner-header-container">
+        <img src="file_00000000f648820895b49c4bf4868e39.png" alt="Quilon Vehicles Banner" onerror="this.style.display='none'">
+        
+        <div class="top-menu-bar">
             <div class="menu-icon" onclick="toggleDropdown(event)">⋮</div>
-            <!-- Dropdown Options Box -->
+            <!-- Dropdown Menu Box -->
             <div id="dropdownMenu" class="dropdown-menu">
-                <div class="menu-btn-action" onclick="openPostModal()">+ Post Your Ad</div>
+                <div class="menu-btn-action" onclick="openPostModal()" id="lblPostBtn">+ Post Your Ad</div>
 
-                <label>Filter by Location (All India)</label>
-                <div style="position: relative;">
-                    <input type="text" id="locationFilter" placeholder="Enter any city or state..." onkeyup="filterPosts()" autocomplete="off">
+                <label id="lblLangTitle">Select Language</label>
+                <select id="languageSelect" onchange="changeLanguage()" style="margin-top: 5px;">
+                    <option value="en">English</option>
+                    <option value="ml">മലയാളം (Malayalam)</option>
+                    <option value="hi">हिन्दी (Hindi)</option>
+                </select>
+
+                <label id="lblLocFilterTitle">Filter by Location (All India)</label>
+                <div style="position: relative; margin-top: 5px;">
+                    <input type="text" id="locationFilter" placeholder="Enter any city or state..." onkeyup="filterPosts()" autocomplete="off" style="margin: 0;">
                 </div>
 
-                <label>Category Filter</label>
-                <select id="categoryFilter" onchange="filterPosts()">
+                <label id="lblCatFilterTitle">Category Filter</label>
+                <select id="categoryFilter" onchange="filterPosts()" style="margin-top: 5px;">
                     <option value="">All Categories</option>
                     <option value="Bike">Bikes</option>
                     <option value="Car">Cars</option>
@@ -84,16 +79,16 @@
                     <option value="Part">Body Parts</option>
                 </select>
 
-                <label>Price Filter</label>
-                <select id="priceFilter" onchange="filterPosts()">
+                <label id="lblPriceFilterTitle">Price Filter</label>
+                <select id="priceFilter" onchange="filterPosts()" style="margin-top: 5px;">
                     <option value="">All Prices</option>
                     <option value="20k">Under ₹20,000</option>
                     <option value="1lakh">Under ₹1 Lakh</option>
                     <option value="5lakhs">Under ₹5 Lakhs</option>
                 </select>
 
-                <label>Fuel Type</label>
-                <select id="fuelFilter" onchange="filterPosts()">
+                <label id="lblFuelFilterTitle">Fuel Type</label>
+                <select id="fuelFilter" onchange="filterPosts()" style="margin-top: 5px;">
                     <option value="">All Fuel Types</option>
                     <option value="petrol">Petrol</option>
                     <option value="diesel">Diesel</option>
@@ -102,10 +97,10 @@
                 </select>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Search Bar Directly Below Header -->
-    <div class="container" style="padding-bottom: 0px; padding-top: 15px;">
+    <!-- Main Search Bar Directly Below Banner -->
+    <div class="container" style="padding-bottom: 0px; padding-top: 20px;">
         <div class="search-container">
             <h3 id="txtSearchFilter" style="margin-top: 0; margin-bottom: 8px;">Search Vehicles & Body Parts</h3>
             <div style="position: relative; width: 100%;">
@@ -113,11 +108,6 @@
                 <div id="searchSuggestions" class="suggestion-box"></div>
             </div>
         </div>
-    </div>
-
-    <!-- Banner Image -->
-    <div class="banner">
-        <img src="file_00000000f648820895b49c4bf4868e39.png" alt="Banner" onerror="this.style.display='none'">
     </div>
 
     <!-- Post Ad Modal (Popup) -->
@@ -159,6 +149,102 @@
     </div>
 
     <script>
+        // Dictionary for Multi-language support (English, Malayalam, Hindi)
+        const translations = {
+            en: {
+                postBtn: "+ Post Your Ad",
+                langTitle: "Select Language",
+                locFilterTitle: "Filter by Location (All India)",
+                catFilterTitle: "Category Filter",
+                priceFilterTitle: "Price Filter",
+                fuelFilterTitle: "Fuel Type",
+                searchFilterTitle: "Search Vehicles & Body Parts",
+                searchPlaceholder: "Search vehicles or parts (e.g. Bullet, Engine, Tyres, Swift)...",
+                recentPosts: "Latest Posts",
+                postAdTitle: "Post Your Ad",
+                postTitlePlaceholder: "Vehicle / Part Name (e.g. Royal Enfield or Headlight)",
+                postPricePlaceholder: "Price in ₹",
+                postLocPlaceholder: "Location (Enter any city, e.g. Kochi, Delhi, Kollam)",
+                postContactPlaceholder: "Contact Details",
+                publishBtn: "Publish Ad (Pay ₹20)",
+                noPosts: "No posts found. Be the first one to post!",
+                categoryLabel: "Category",
+                fuelLabel: "Fuel",
+                mapText: "View on Map",
+                unlockBtn: "Unlock Contact"
+            },
+            ml: {
+                postBtn: "+ പരസ്യം പോസ്റ്റ് ചെയ്യുക",
+                langTitle: "ഭാഷ തിരഞ്ഞെടുക്കുക",
+                locFilterTitle: "സ്ഥലം അനുസരിച്ച് ഫിൽട്ടർ ചെയ്യുക",
+                catFilterTitle: "കാറ്റഗറി ഫിൽട്ടർ",
+                priceFilterTitle: "വില ഫിൽട്ടർ",
+                fuelFilterTitle: "ഇന്ധന തരം",
+                searchFilterTitle: "വാഹനങ്ങളും പാർട്സുകളും തിരയുക",
+                searchPlaceholder: "വാഹനങ്ങൾ അല്ലെങ്കിൽ പാർട്സുകൾ തിരയുക...",
+                recentPosts: "ഏറ്റവും പുതിയ പരസ്യങ്ങൾ",
+                postAdTitle: "നിങ്ങളുടെ പരസ്യം പോസ്റ്റ് ചെയ്യുക",
+                postTitlePlaceholder: "വാഹനം / പാർട്സിന്റെ പേര്",
+                postPricePlaceholder: "വില രൂപയിൽ",
+                postLocPlaceholder: "സ്ഥലം (ഉദാ: കൊച്ചി, ഡൽഹി, കൊല്ലം)",
+                postContactPlaceholder: "ബന്ധപ്പെടേണ്ട വിവരങ്ങൾ",
+                publishBtn: "പരസ്യം പ്രസിദ്ധീകരിക്കുക (₹20 നൽകുക)",
+                noPosts: "പരസ്യങ്ങളൊന്നും കണ്ടെത്തിയില്ല. ആദ്യമായി പോസ്റ്റ് ചെയ്യൂ!",
+                categoryLabel: "കാറ്റഗറി",
+                fuelLabel: "ഇന്ധനം",
+                mapText: "മാപ്പിൽ കാണുക",
+                unlockBtn: "നമ്പർ അൺലോക്ക് ചെയ്യുക"
+            },
+            hi: {
+                postBtn: "+ अपना विज्ञापन पोस्ट करें",
+                langTitle: "भाषा चुनिए",
+                locFilterTitle: "स्थान के अनुसार फ़िल्टर करें",
+                catFilterTitle: "श्रेणी फ़िल्टर",
+                priceFilterTitle: "मूल्य फ़िल्टर",
+                fuelFilterTitle: "ईंधन का प्रकार",
+                searchFilterTitle: "वाहन और पार्ट्स खोजें",
+                searchPlaceholder: "वाहन या पार्ट्स खोजें...",
+                recentPosts: "नवीनतम विज्ञापन",
+                postAdTitle: "अपना विज्ञापन पोस्ट करें",
+                postTitlePlaceholder: "वाहन / पार्ट का नाम",
+                postPricePlaceholder: "कीमत ₹ में",
+                postLocPlaceholder: "स्थान दर्ज करें",
+                postContactPlaceholder: "संपर्क विवरण",
+                publishBtn: "विज्ञापन प्रकाशित करें (₹20 भुगतान करें)",
+                noPosts: "कोई विज्ञापन नहीं मिला। पहले पोस्ट करें!",
+                categoryLabel: "श्रेणी",
+                fuelLabel: "ईंधन",
+                mapText: "मानचित्र पर देखें",
+                unlockBtn: "संपर्क अनलॉक करें"
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            localStorage.setItem('quilon_lang', lang);
+            applyTranslations(lang);
+        }
+
+        function applyTranslations(lang) {
+            const t = translations[lang] || translations.en;
+            document.getElementById('lblPostBtn').innerText = t.postBtn;
+            document.getElementById('lblLangTitle').innerText = t.langTitle;
+            document.getElementById('lblLocFilterTitle').innerText = t.locFilterTitle;
+            document.getElementById('lblCatFilterTitle').innerText = t.catFilterTitle;
+            document.getElementById('lblPriceFilterTitle').innerText = t.priceFilterTitle;
+            document.getElementById('lblFuelFilterTitle').innerText = t.fuelFilterTitle;
+            document.getElementById('txtSearchFilter').innerText = t.searchFilterTitle;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            document.getElementById('txtRecentPosts').innerText = t.recentPosts;
+            document.getElementById('txtPostAd').innerText = t.postAdTitle;
+            document.getElementById('postTitle').placeholder = t.postTitlePlaceholder;
+            document.getElementById('postPrice').placeholder = t.postPricePlaceholder;
+            document.getElementById('postLocation').placeholder = t.postLocPlaceholder;
+            document.getElementById('postContact').placeholder = t.postContactPlaceholder;
+            document.getElementById('btnSubmit').innerText = t.publishBtn;
+            filterPosts();
+        }
+
         // 3 Dots Menu Toggle
         function toggleDropdown(event) {
             event.stopPropagation();
@@ -217,15 +303,18 @@
         function updateFeesText() {
             const cat = document.getElementById('postCategory').value;
             const btn = document.getElementById('btnSubmit');
+            const lang = document.getElementById('languageSelect').value;
             if(cat === 'Auto') {
-                btn.innerText = "Publish Ad (Pay ₹30)";
+                btn.innerText = lang === 'ml' ? "പരസ്യം പ്രസിദ്ധീകരിക്കുക (₹30 നൽകുക)" : (lang === 'hi' ? "विज्ञापन प्रकाशित करें (₹30 भुगतान करें)" : "Publish Ad (Pay ₹30)");
             } else {
-                btn.innerText = "Publish Ad (Pay ₹20)";
+                btn.innerText = lang === 'ml' ? "പരസ്യം പ്രസിദ്ധീകരിക്കുക (₹20 നൽകുക)" : (lang === 'hi' ? "विज्ञापन प्रकाशित करें (₹20 भुगतान करें)" : "Publish Ad (Pay ₹20)");
             }
         }
 
         window.onload = function() {
-            loadPosts();
+            const savedLang = localStorage.getItem('quilon_lang') || 'en';
+            document.getElementById('languageSelect').value = savedLang;
+            applyTranslations(savedLang);
         };
 
         function submitPost() {
@@ -294,10 +383,6 @@
             }
         }
 
-        function loadPosts() {
-            filterPosts();
-        }
-
         function filterPosts() {
             let posts = JSON.parse(localStorage.getItem('quilon_posts')) || [];
             
@@ -315,6 +400,8 @@
             const fuelFilter = document.getElementById('fuelFilter').value;
             const priceFilter = document.getElementById('priceFilter').value;
             const locFilter = document.getElementById('locationFilter').value.toLowerCase();
+            const lang = document.getElementById('languageSelect').value;
+            const t = translations[lang] || translations.en;
 
             const container = document.getElementById('postsContainer');
             container.innerHTML = '';
@@ -334,7 +421,7 @@
             });
 
             if(filtered.length === 0) {
-                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #333; font-weight: bold;'>No posts found. Be the first one to post!</p>";
+                container.innerHTML = `<p style='grid-column: 1/-1; text-align: center; color: #333; font-weight: bold;'>${t.noPosts}</p>`;
                 return;
             }
 
@@ -349,13 +436,13 @@
                     <button class="fav-btn" onclick="toggleFavorite(${p.id})">${isFav ? '❤️' : '🤍'}</button>
                     ${p.image ? `<img src="${p.image}" alt="Vehicle Image">` : ''}
                     <h3>${p.title}</h3>
-                    <p><b>Category:</b> ${p.category} | <b>Fuel:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
+                    <p><b>${t.categoryLabel}:</b> ${p.category} | <b>${t.fuelLabel}:</b> ${p.fuel ? p.fuel.toUpperCase() : 'N/A'}</p>
                     <p class="price">₹ ${p.price}</p>
                     <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}" target="_blank" style="color: #047857; text-decoration: none; font-weight: bold;">
-                        ${p.location} (View on Map)
+                        ${p.location} (${t.mapText})
                     </a></p>
                     <div>
-                        ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id}, '${p.category}')">Unlock Contact (₹${unlockFee})</button>`}
+                        ${isUnlocked ? `<p>📞 <b>Contact:</b> ${p.contact}</p>` : `<button onclick="unlockContact(${p.id}, '${p.category}')">${t.unlockBtn} (₹${unlockFee})</button>`}
                     </div>
                 `;
                 container.appendChild(card);
